@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,49 +14,87 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         @keyframes slideUp {
-            from { transform: translateY(100%); }
-            to { transform: translateY(0); }
+            from {
+                transform: translateY(100%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
         }
-        .animate-slideUp { animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        .animate-slideUp {
+            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
-        .animate-fadeIn { animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        
+
+        .animate-fadeIn {
+            animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
         /* Modern Scrollbar adjustments for high-density tables */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #020617; }
-        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 99px; }
-        ::-webkit-scrollbar-thumb:hover { background: #334155; }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #020617;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 99px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans min-h-screen antialiased selection:bg-indigo-500/30 selection:text-white">
+
+<body
+    class="bg-slate-950 text-slate-100 font-sans min-h-screen antialiased selection:bg-indigo-500/30 selection:text-white">
 
     <div class="max-w-[1700px] mx-auto p-4 lg:p-8 space-y-8 pb-32">
-        
+
         <!-- Header Section -->
         <header class="flex flex-col xl:flex-row xl:items-center justify-between gap-6 border-b border-slate-800 pb-6">
             <div class="space-y-1">
                 <h1 class="text-3xl font-black tracking-tight text-white flex items-center gap-3">
                     <i class="fa-solid fa-microchip text-indigo-500 animate-pulse"></i>
                     Cursor Master Model Matrix
-                    <span class="text-xs font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-3 py-1 rounded-full uppercase tracking-wider">
+                    <span
+                        class="text-xs font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-3 py-1 rounded-full uppercase tracking-wider">
                         2026 Production Edition
                     </span>
                 </h1>
                 <p class="text-sm text-slate-400">
-                    A comprehensive, high-fidelity pricing advisor with interactive cash calculators, real-time prompt simulators, and side-by-side comparison decks.
+                    A comprehensive, high-fidelity pricing advisor with interactive cash calculators, real-time prompt
+                    simulators, and side-by-side comparison decks.
                 </p>
             </div>
-            
+
             <!-- Global Operational Setting controls -->
             <div class="flex flex-wrap items-center gap-3">
                 <div class="bg-slate-900 p-1 rounded-xl border border-slate-800 flex gap-1 shadow-inner">
-                    <button onclick="setGlobalMode('Standard')" id="mode-Standard" class="px-4 py-2 text-xs font-bold rounded-lg bg-indigo-600 text-white transition shadow duration-150">
-                        Standard Fast
+                    <button onclick="setGlobalMode('Standard')" id="mode-Standard"
+                        class="px-4 py-2 text-xs font-bold rounded-lg bg-indigo-600 text-white transition shadow duration-150">
+                        Standard
                     </button>
-                    <button onclick="setGlobalMode('High')" id="mode-High" class="px-4 py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5 duration-150">
+                    <button onclick="setGlobalMode('High')" id="mode-High"
+                        class="px-4 py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5 duration-150">
                         <i class="fa-solid fa-fire text-amber-500"></i> High Mode (+1.5x Pool Hit)
                     </button>
                 </div>
@@ -64,51 +103,63 @@
 
         <!-- Top Row: Simulator & Filter Hub -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-            
+
             <!-- Dynamic Custom Simulator Tool (Input/Output/Cache slider weights) -->
-            <div class="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl flex flex-col justify-between space-y-6">
+            <div
+                class="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl flex flex-col justify-between space-y-6">
                 <div>
                     <div class="flex items-center justify-between border-b border-slate-800 pb-3">
                         <h3 class="font-bold text-white text-sm flex items-center gap-2">
                             <i class="fa-solid fa-calculator text-emerald-400"></i> Custom Prompt Run Simulator
                         </h3>
-                        <span class="text-[10px] bg-emerald-500/10 text-emerald-400 font-bold border border-emerald-500/20 px-2 py-0.5 rounded">
+                        <span
+                            class="text-[10px] bg-emerald-500/10 text-emerald-400 font-bold border border-emerald-500/20 px-2 py-0.5 rounded">
                             Interactive
                         </span>
                     </div>
                     <p class="text-xs text-slate-400 mt-2">
-                        Configure a typical task size. The table will instantly recalculate the total simulated cost and monthly Pro Plan runway.
+                        Configure a typical task size. The table will instantly recalculate the total simulated cost and
+                        monthly Pro Plan runway.
                     </p>
-                    
+
                     <!-- Config Controls -->
                     <div class="space-y-4 mt-4">
                         <!-- Input Token Slider -->
                         <div class="space-y-1">
                             <div class="flex justify-between text-xs font-medium">
                                 <span class="text-slate-300">Input Size (Context Size)</span>
-                                <span class="text-indigo-400 font-mono font-bold" id="sliderVal-input">15,000 tokens</span>
+                                <span class="text-indigo-400 font-mono font-bold" id="sliderVal-input">15,000
+                                    tokens</span>
                             </div>
-                            <input type="range" id="slider-input" min="500" max="100000" step="500" value="15000" oninput="updateSimulator()" class="w-full h-1.5 bg-slate-950 rounded-lg appearance-none cursor-pointer accent-indigo-500">
+                            <input type="range" id="slider-input" min="500" max="100000" step="500" value="15000"
+                                oninput="updateSimulator()"
+                                class="w-full h-1.5 bg-slate-950 rounded-lg appearance-none cursor-pointer accent-indigo-500">
                         </div>
 
                         <!-- Output Token Slider -->
                         <div class="space-y-1">
                             <div class="flex justify-between text-xs font-medium">
                                 <span class="text-slate-300">Expected Generation Output</span>
-                                <span class="text-fuchsia-400 font-mono font-bold" id="sliderVal-output">1,500 tokens</span>
+                                <span class="text-fuchsia-400 font-mono font-bold" id="sliderVal-output">1,500
+                                    tokens</span>
                             </div>
-                            <input type="range" id="slider-output" min="100" max="10000" step="100" value="1500" oninput="updateSimulator()" class="w-full h-1.5 bg-slate-950 rounded-lg appearance-none cursor-pointer accent-fuchsia-500">
+                            <input type="range" id="slider-output" min="100" max="10000" step="100" value="1500"
+                                oninput="updateSimulator()"
+                                class="w-full h-1.5 bg-slate-950 rounded-lg appearance-none cursor-pointer accent-fuchsia-500">
                         </div>
 
                         <!-- Caching Matching Ratio -->
                         <div class="space-y-1">
                             <div class="flex justify-between text-xs font-medium">
                                 <span class="text-slate-300 flex items-center gap-1">
-                                    Cache Match Rate <i class="fa-solid fa-circle-question text-slate-600 text-[10px]" title="The ratio of prompt tokens retrieved from context memory."></i>
+                                    Cache Match Rate <i class="fa-solid fa-circle-question text-slate-600 text-[10px]"
+                                        title="The ratio of prompt tokens retrieved from context memory."></i>
                                 </span>
                                 <span class="text-emerald-400 font-mono font-bold" id="sliderVal-cache">40% Match</span>
                             </div>
-                            <input type="range" id="slider-cache" min="0" max="100" step="5" value="40" oninput="updateSimulator()" class="w-full h-1.5 bg-slate-950 rounded-lg appearance-none cursor-pointer accent-emerald-500">
+                            <input type="range" id="slider-cache" min="0" max="100" step="5" value="40"
+                                oninput="updateSimulator()"
+                                class="w-full h-1.5 bg-slate-950 rounded-lg appearance-none cursor-pointer accent-emerald-500">
                         </div>
                     </div>
                 </div>
@@ -129,22 +180,26 @@
             </div>
 
             <!-- Focus Selector (Multi-Select Checkbox Dashboard with Presets) -->
-            <div class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl flex flex-col justify-between space-y-4">
+            <div
+                class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl flex flex-col justify-between space-y-4">
                 <div>
                     <div class="flex items-center justify-between border-b border-slate-800 pb-3">
                         <h3 class="font-bold text-white text-sm flex items-center gap-2">
                             <i class="fa-solid fa-sliders text-amber-400"></i> Advisor Criteria Matrix & Provider Filter
                         </h3>
-                        
+
                         <!-- Presets Dropdown Actions -->
                         <div class="flex gap-2">
-                            <button onclick="applyPreset('budget')" class="px-2.5 py-1 text-[10px] font-bold rounded bg-slate-800 hover:bg-slate-700 text-emerald-400 transition">
+                            <button onclick="applyPreset('budget')"
+                                class="px-2.5 py-1 text-[10px] font-bold rounded bg-slate-800 hover:bg-slate-700 text-emerald-400 transition">
                                 <i class="fa-solid fa-piggy-bank mr-1"></i> Budget Preset
                             </button>
-                            <button onclick="applyPreset('power')" class="px-2.5 py-1 text-[10px] font-bold rounded bg-slate-800 hover:bg-slate-700 text-indigo-400 transition">
+                            <button onclick="applyPreset('power')"
+                                class="px-2.5 py-1 text-[10px] font-bold rounded bg-slate-800 hover:bg-slate-700 text-indigo-400 transition">
                                 <i class="fa-solid fa-bolt mr-1"></i> Power Preset
                             </button>
-                            <button onclick="applyPreset('clear')" class="px-2.5 py-1 text-[10px] font-bold rounded bg-slate-850 hover:bg-slate-800 text-slate-400 transition">
+                            <button onclick="applyPreset('clear')"
+                                class="px-2.5 py-1 text-[10px] font-bold rounded bg-slate-850 hover:bg-slate-800 text-slate-400 transition">
                                 Clear All
                             </button>
                         </div>
@@ -153,99 +208,125 @@
                     <!-- Core Task Focus Checkbox Layout -->
                     <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2 mt-4">
                         <!-- SOTA Intelligence -->
-                        <label class="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-800/60 cursor-pointer transition border border-transparent hover:border-slate-800">
-                            <input type="checkbox" id="focus-top" checked onchange="runPickerAdvisor()" class="mt-0.5 rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-0 w-3.5 h-3.5">
+                        <label
+                            class="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-800/60 cursor-pointer transition border border-transparent hover:border-slate-800">
+                            <input type="checkbox" id="focus-top" checked onchange="runPickerAdvisor()"
+                                class="mt-0.5 rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-0 w-3.5 h-3.5">
                             <div>
                                 <span class="text-[11px] font-bold text-slate-200 block">SOTA Logic</span>
                                 <span class="text-[9px] text-slate-500 block leading-tight">Complex schemas</span>
                             </div>
                         </label>
                         <!-- Speed Autocomplete -->
-                        <label class="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-800/60 cursor-pointer transition border border-transparent hover:border-slate-800">
-                            <input type="checkbox" id="focus-speed" onchange="runPickerAdvisor()" class="mt-0.5 rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-0 w-3.5 h-3.5">
+                        <label
+                            class="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-800/60 cursor-pointer transition border border-transparent hover:border-slate-800">
+                            <input type="checkbox" id="focus-speed" onchange="runPickerAdvisor()"
+                                class="mt-0.5 rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-0 w-3.5 h-3.5">
                             <div>
                                 <span class="text-[11px] font-bold text-slate-200 block">Fast Streaming</span>
                                 <span class="text-[9px] text-slate-500 block leading-tight">Instant responses</span>
                             </div>
                         </label>
                         <!-- Bug Hunt -->
-                        <label class="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-800/60 cursor-pointer transition border border-transparent hover:border-slate-800">
-                            <input type="checkbox" id="focus-bughunt" onchange="runPickerAdvisor()" class="mt-0.5 rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-0 w-3.5 h-3.5">
+                        <label
+                            class="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-800/60 cursor-pointer transition border border-transparent hover:border-slate-800">
+                            <input type="checkbox" id="focus-bughunt" onchange="runPickerAdvisor()"
+                                class="mt-0.5 rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-0 w-3.5 h-3.5">
                             <div>
                                 <span class="text-[11px] font-bold text-slate-200 block">Bug Detective</span>
                                 <span class="text-[9px] text-slate-500 block leading-tight">Race condition hunts</span>
                             </div>
                         </label>
                         <!-- Legacy Archaeologist -->
-                        <label class="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-800/60 cursor-pointer transition border border-transparent hover:border-slate-800">
-                            <input type="checkbox" id="focus-legacy" onchange="runPickerAdvisor()" class="mt-0.5 rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-0 w-3.5 h-3.5">
+                        <label
+                            class="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-800/60 cursor-pointer transition border border-transparent hover:border-slate-800">
+                            <input type="checkbox" id="focus-legacy" onchange="runPickerAdvisor()"
+                                class="mt-0.5 rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-0 w-3.5 h-3.5">
                             <div>
                                 <span class="text-[11px] font-bold text-slate-200 block">Legacy Context</span>
-                                <span class="text-[9px] text-slate-500 block leading-tight">Huge read optimization</span>
+                                <span class="text-[9px] text-slate-500 block leading-tight">Huge read
+                                    optimization</span>
                             </div>
                         </label>
                         <!-- Boilerplate Factory -->
-                        <label class="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-800/60 cursor-pointer transition border border-transparent hover:border-slate-800">
-                            <input type="checkbox" id="focus-boilerplate" onchange="runPickerAdvisor()" class="mt-0.5 rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-0 w-3.5 h-3.5">
+                        <label
+                            class="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-800/60 cursor-pointer transition border border-transparent hover:border-slate-800">
+                            <input type="checkbox" id="focus-boilerplate" onchange="runPickerAdvisor()"
+                                class="mt-0.5 rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-0 w-3.5 h-3.5">
                             <div>
                                 <span class="text-[11px] font-bold text-slate-200 block">Boilerplate Init</span>
                                 <span class="text-[9px] text-slate-500 block leading-tight">Greenfield generation</span>
                             </div>
                         </label>
                         <!-- DevOps & Pipelines -->
-                        <label class="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-800/60 cursor-pointer transition border border-transparent hover:border-slate-800">
-                            <input type="checkbox" id="focus-devops" onchange="runPickerAdvisor()" class="mt-0.5 rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-0 w-3.5 h-3.5">
+                        <label
+                            class="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-800/60 cursor-pointer transition border border-transparent hover:border-slate-800">
+                            <input type="checkbox" id="focus-devops" onchange="runPickerAdvisor()"
+                                class="mt-0.5 rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-0 w-3.5 h-3.5">
                             <div>
                                 <span class="text-[11px] font-bold text-slate-200 block">DevOps Stack</span>
                                 <span class="text-[9px] text-slate-500 block leading-tight">CI/CD & dense Regex</span>
                             </div>
                         </label>
                         <!-- Agent loop autopilot -->
-                        <label class="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-800/60 cursor-pointer transition border border-transparent hover:border-slate-800">
-                            <input type="checkbox" id="focus-agent" onchange="runPickerAdvisor()" class="mt-0.5 rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-0 w-3.5 h-3.5">
+                        <label
+                            class="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-800/60 cursor-pointer transition border border-transparent hover:border-slate-800">
+                            <input type="checkbox" id="focus-agent" onchange="runPickerAdvisor()"
+                                class="mt-0.5 rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-0 w-3.5 h-3.5">
                             <div>
                                 <span class="text-[11px] font-bold text-slate-200 block">Agent Autopilot</span>
                                 <span class="text-[9px] text-slate-500 block leading-tight">Multi-file self edits</span>
                             </div>
                         </label>
                         <!-- Frontend UI Visuals -->
-                        <label class="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-800/60 cursor-pointer transition border border-transparent hover:border-slate-800">
-                            <input type="checkbox" id="focus-pixel" onchange="runPickerAdvisor()" class="mt-0.5 rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-0 w-3.5 h-3.5">
+                        <label
+                            class="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-800/60 cursor-pointer transition border border-transparent hover:border-slate-800">
+                            <input type="checkbox" id="focus-pixel" onchange="runPickerAdvisor()"
+                                class="mt-0.5 rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-0 w-3.5 h-3.5">
                             <div>
                                 <span class="text-[11px] font-bold text-slate-200 block">UI Pixel-Pusher</span>
                                 <span class="text-[9px] text-slate-500 block leading-tight">Visual layout mapping</span>
                             </div>
                         </label>
                         <!-- Enterprise Airgapped ZDR -->
-                        <label class="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-800/60 cursor-pointer transition border border-transparent hover:border-slate-800">
-                            <input type="checkbox" id="focus-privacy" onchange="runPickerAdvisor()" class="mt-0.5 rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-0 w-3.5 h-3.5">
+                        <label
+                            class="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-800/60 cursor-pointer transition border border-transparent hover:border-slate-800">
+                            <input type="checkbox" id="focus-privacy" onchange="runPickerAdvisor()"
+                                class="mt-0.5 rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-0 w-3.5 h-3.5">
                             <div>
                                 <span class="text-[11px] font-bold text-slate-200 block">Air-Gap Security</span>
                                 <span class="text-[9px] text-slate-500 block leading-tight">Zero Retention rules</span>
                             </div>
                         </label>
                         <!-- Language translation -->
-                        <label class="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-800/60 cursor-pointer transition border border-transparent hover:border-slate-800">
-                            <input type="checkbox" id="focus-migrate" onchange="runPickerAdvisor()" class="mt-0.5 rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-0 w-3.5 h-3.5">
+                        <label
+                            class="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-800/60 cursor-pointer transition border border-transparent hover:border-slate-800">
+                            <input type="checkbox" id="focus-migrate" onchange="runPickerAdvisor()"
+                                class="mt-0.5 rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-0 w-3.5 h-3.5">
                             <div>
                                 <span class="text-[11px] font-bold text-slate-200 block">Code Migration</span>
                                 <span class="text-[9px] text-slate-500 block leading-tight">Translate frameworks</span>
                             </div>
                         </label>
                         <!-- Database Query Performance -->
-                        <label class="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-800/60 cursor-pointer transition border border-transparent hover:border-slate-800">
-                            <input type="checkbox" id="focus-sql" onchange="runPickerAdvisor()" class="mt-0.5 rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-0 w-3.5 h-3.5">
+                        <label
+                            class="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-800/60 cursor-pointer transition border border-transparent hover:border-slate-800">
+                            <input type="checkbox" id="focus-sql" onchange="runPickerAdvisor()"
+                                class="mt-0.5 rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-0 w-3.5 h-3.5">
                             <div>
                                 <span class="text-[11px] font-bold text-slate-200 block">Query Tuning</span>
                                 <span class="text-[9px] text-slate-500 block leading-tight">Postgres & ORM locks</span>
                             </div>
                         </label>
                         <!-- Strict Reviewer -->
-                        <label class="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-800/60 cursor-pointer transition border border-transparent hover:border-slate-800">
-                            <input type="checkbox" id="focus-reviewer" onchange="runPickerAdvisor()" class="mt-0.5 rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-0 w-3.5 h-3.5">
+                        <label
+                            class="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-800/60 cursor-pointer transition border border-transparent hover:border-slate-800">
+                            <input type="checkbox" id="focus-reviewer" onchange="runPickerAdvisor()"
+                                class="mt-0.5 rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-0 w-3.5 h-3.5">
                             <div>
                                 <span class="text-[11px] font-bold text-slate-200 block">Strict Auditor</span>
-                                <span class="text-[9px] text-slate-500 block leading-tight">SOLID architecture reviews</span>
+                                <span class="text-[9px] text-slate-500 block leading-tight">SOLID architecture
+                                    reviews</span>
                             </div>
                         </label>
                     </div>
@@ -253,14 +334,27 @@
 
                 <!-- Provider-Specific Group Filtering Pills -->
                 <div class="border-t border-slate-800 pt-3">
-                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Provider Insulated Filters:</span>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Provider
+                        Insulated Filters:</span>
                     <div class="flex flex-wrap gap-2" id="providerFilters">
-                        <button onclick="toggleProviderFilter('All')" class="px-3 py-1 text-[10px] font-black rounded-lg bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 transition shadow-inner" id="prov-All">All Models</button>
-                        <button onclick="toggleProviderFilter('Anthropic')" class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition" id="prov-Anthropic">Anthropic</button>
-                        <button onclick="toggleProviderFilter('OpenAI')" class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition" id="prov-OpenAI">OpenAI</button>
-                        <button onclick="toggleProviderFilter('Google')" class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition" id="prov-Google">Google</button>
-                        <button onclick="toggleProviderFilter('Grok')" class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition" id="prov-Grok">Grok</button>
-                        <button onclick="toggleProviderFilter('Composer')" class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition" id="prov-Composer">Composer Native</button>
+                        <button onclick="toggleProviderFilter('All')"
+                            class="px-3 py-1 text-[10px] font-black rounded-lg bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 transition shadow-inner"
+                            id="prov-All">All Models</button>
+                        <button onclick="toggleProviderFilter('Anthropic')"
+                            class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition"
+                            id="prov-Anthropic">Anthropic</button>
+                        <button onclick="toggleProviderFilter('OpenAI')"
+                            class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition"
+                            id="prov-OpenAI">OpenAI</button>
+                        <button onclick="toggleProviderFilter('Google')"
+                            class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition"
+                            id="prov-Google">Google</button>
+                        <button onclick="toggleProviderFilter('Grok')"
+                            class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition"
+                            id="prov-Grok">Grok</button>
+                        <button onclick="toggleProviderFilter('Composer')"
+                            class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition"
+                            id="prov-Composer">Composer Native</button>
                     </div>
                 </div>
             </div>
@@ -270,7 +364,8 @@
         <!-- Middle Section: Recommendation Cards Panel -->
         <div class="space-y-4">
             <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                <i class="fa-solid fa-wand-magic-sparkles text-amber-400 text-xs"></i> Intelligent Advisor Recommendation Engine
+                <i class="fa-solid fa-wand-magic-sparkles text-amber-400 text-xs"></i> Intelligent Advisor
+                Recommendation Engine
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4" id="advisorContainer">
                 <!-- Recommendations cards rendered dynamically here -->
@@ -279,18 +374,32 @@
 
         <!-- Bottom Large Component: Sortable Data Matrix & Comparison Deck -->
         <div class="grid grid-cols-1 gap-6">
-            <div class="bg-slate-900 rounded-2xl border border-slate-800 shadow-2xl overflow-hidden flex flex-col justify-between">
-                
+            <div
+                class="bg-slate-900 rounded-2xl border border-slate-800 shadow-2xl overflow-hidden flex flex-col justify-between">
+
                 <!-- Table Search, Column Toggles and Controls -->
-                <div class="p-5 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900/60">
+                <div
+                    class="p-5 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900/60">
                     <div>
                         <h2 class="text-base font-bold text-white">Advanced Cost Metric & Benchmark Index</h2>
-                        <p class="text-xs text-slate-400 mt-0.5">Click column headers to instantly sort. Click comparison scales to evaluate side-by-side.</p>
+                        <p class="text-xs text-slate-400 mt-0.5">Click column headers to instantly sort. Click
+                            comparison scales to evaluate side-by-side.</p>
+                        <p class="text-[11px] text-amber-400/90 mt-2 leading-relaxed max-w-3xl">
+                            <i class="fa-solid fa-bolt text-amber-500 mr-1"></i>
+                            Rates below are standard (non–fast mode) API pricing from
+                            <a href="https://cursor.com/docs/models-and-pricing" class="underline hover:text-amber-300"
+                                target="_blank" rel="noopener">Cursor docs</a>.
+                            Many models also offer optional <strong>fast mode</strong> (lower latency, higher
+                            $/1M)—often about <strong>2×</strong> all token rates (e.g. GPT-5.4); Opus fast tiers can be
+                            higher. Enable fast mode in the model picker; this table does not list separate fast-mode
+                            rows.
+                        </p>
                     </div>
                     <div class="flex gap-3">
                         <div class="relative">
                             <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-500 text-xs"></i>
-                            <input type="text" id="tableSearch" onkeyup="filterTable()" placeholder="Quick search..." class="bg-slate-950 border border-slate-800 text-xs rounded-xl pl-8 pr-4 py-2 w-48 focus:outline-none focus:border-indigo-500 text-slate-200 transition">
+                            <input type="text" id="tableSearch" onkeyup="filterTable()" placeholder="Quick search..."
+                                class="bg-slate-950 border border-slate-800 text-xs rounded-xl pl-8 pr-4 py-2 w-48 focus:outline-none focus:border-indigo-500 text-slate-200 transition">
                         </div>
                     </div>
                 </div>
@@ -299,32 +408,42 @@
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse text-xs" id="masterTable">
                         <thead>
-                            <tr class="bg-slate-950 text-slate-400 text-[10px] font-black uppercase tracking-wider border-b border-slate-800 select-none">
-                                <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-slate-200 whitespace-nowrap" onclick="sortTable(0)">
+                            <tr
+                                class="bg-slate-950 text-slate-400 text-[10px] font-black uppercase tracking-wider border-b border-slate-800 select-none">
+                                <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-slate-200 whitespace-nowrap"
+                                    onclick="sortTable(0)">
                                     Model Engine <i class="fa-solid fa-sort ml-1 opacity-50 text-[9px]"></i>
                                 </th>
-                                <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-slate-200 font-mono text-right whitespace-nowrap" onclick="sortTable(1)">
+                                <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-slate-200 font-mono text-right whitespace-nowrap"
+                                    onclick="sortTable(1)">
                                     Input / 1M <i class="fa-solid fa-sort ml-1 opacity-50 text-[9px]"></i>
                                 </th>
-                                <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-slate-200 font-mono text-right whitespace-nowrap" onclick="sortTable(2)">
+                                <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-slate-200 font-mono text-right whitespace-nowrap"
+                                    onclick="sortTable(2)">
                                     Cache Write <i class="fa-solid fa-sort ml-1 opacity-50 text-[9px]"></i>
                                 </th>
-                                <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-slate-200 font-mono text-right whitespace-nowrap" onclick="sortTable(3)">
+                                <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-slate-200 font-mono text-right whitespace-nowrap"
+                                    onclick="sortTable(3)">
                                     Cache Read <i class="fa-solid fa-sort ml-1 opacity-50 text-[9px]"></i>
                                 </th>
-                                <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-slate-200 font-mono text-right whitespace-nowrap" onclick="sortTable(4)">
+                                <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-slate-200 font-mono text-right whitespace-nowrap"
+                                    onclick="sortTable(4)">
                                     Output / 1M <i class="fa-solid fa-sort ml-1 opacity-50 text-[9px]"></i>
                                 </th>
-                                <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-slate-200 font-mono text-right whitespace-nowrap" onclick="sortTable(5)">
+                                <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-slate-200 font-mono text-right whitespace-nowrap"
+                                    onclick="sortTable(5)">
                                     Simulated Cost <i class="fa-solid fa-sort ml-1 opacity-50 text-[9px]"></i>
                                 </th>
-                                <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-slate-200 text-center whitespace-nowrap" onclick="sortTable(6)">
+                                <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-slate-200 text-center whitespace-nowrap"
+                                    onclick="sortTable(6)">
                                     Cost Multiplier <i class="fa-solid fa-sort ml-1 opacity-50 text-[9px]"></i>
                                 </th>
-                                <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-slate-200 text-center whitespace-nowrap" onclick="sortTable(7)">
+                                <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-slate-200 text-center whitespace-nowrap"
+                                    onclick="sortTable(7)">
                                     Coding Bench <i class="fa-solid fa-sort ml-1 opacity-50 text-[9px]"></i>
                                 </th>
-                                <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-indigo-400 text-center whitespace-nowrap" onclick="sortTable(8)">
+                                <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-indigo-400 text-center whitespace-nowrap"
+                                    onclick="sortTable(8)">
                                     Overall Tier <i class="fa-solid fa-sort ml-1 opacity-50 text-[9px]"></i>
                                 </th>
                                 <th class="p-3.5 text-center text-slate-400 font-medium">Compare Deck</th>
@@ -339,10 +458,12 @@
         </div>
 
         <!-- Floating Head-to-Head Side-by-Side Comparison sliding drawer -->
-        <div id="compareDeckContainer" class="fixed bottom-0 left-0 right-0 bg-slate-900 border-t border-slate-800 p-4 shadow-2xl transform translate-y-full transition-transform duration-300 z-50">
+        <div id="compareDeckContainer"
+            class="fixed bottom-0 left-0 right-0 bg-slate-900 border-t border-slate-800 p-4 shadow-2xl transform translate-y-full transition-transform duration-300 z-50">
             <div class="max-w-[1700px] mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div class="flex items-center gap-3">
-                    <span class="w-8 h-8 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center">
+                    <span
+                        class="w-8 h-8 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center">
                         <i class="fa-solid fa-code-compare text-xs"></i>
                     </span>
                     <div>
@@ -357,10 +478,12 @@
                 </div>
 
                 <div class="flex gap-2">
-                    <button onclick="triggerCompareMatrixModal()" class="px-4 py-2 text-[11px] font-black rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white transition shadow duration-150">
+                    <button onclick="triggerCompareMatrixModal()"
+                        class="px-4 py-2 text-[11px] font-black rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white transition shadow duration-150">
                         Compare Now
                     </button>
-                    <button onclick="clearCompareDeck()" class="px-3 py-2 text-[11px] font-bold rounded-lg bg-slate-800 hover:bg-slate-750 text-slate-400 transition">
+                    <button onclick="clearCompareDeck()"
+                        class="px-3 py-2 text-[11px] font-bold rounded-lg bg-slate-800 hover:bg-slate-750 text-slate-400 transition">
                         Clear Deck
                     </button>
                 </div>
@@ -368,15 +491,18 @@
         </div>
 
         <!-- Head-to-Head Detailed Overlay Modal -->
-        <div id="compareModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-4 z-50 animate-fadeIn">
+        <div id="compareModal"
+            class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-4 z-50 animate-fadeIn">
             <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-4xl w-full p-6 shadow-2xl relative">
-                <button onclick="closeCompareModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-200 p-1">
+                <button onclick="closeCompareModal()"
+                    class="absolute top-4 right-4 text-slate-400 hover:text-slate-200 p-1">
                     <i class="fa-solid fa-xmark text-sm"></i>
                 </button>
                 <h3 class="text-lg font-black text-white flex items-center gap-2 border-b border-slate-800 pb-3 mb-6">
-                    <i class="fa-solid fa-code-compare text-indigo-400"></i> Side-by-Side Architectural Evaluation Matrix
+                    <i class="fa-solid fa-code-compare text-indigo-400"></i> Side-by-Side Architectural Evaluation
+                    Matrix
                 </h3>
-                
+
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="modalCompareGrid">
                     <!-- Head-to-Head spec sheets rendered dynamically by JS -->
                 </div>
@@ -389,25 +515,33 @@
                 <i class="fa-solid fa-circle-info text-indigo-400 text-xs animate-bounce"></i>
                 Structural Column Calculation Guidelines
             </h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 text-[11px] text-slate-400 leading-relaxed border-b border-slate-800/60 pb-6">
-                
+            <div
+                class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 text-[11px] text-slate-400 leading-relaxed border-b border-slate-800/60 pb-6">
+
                 <!-- Pricing Modifiers -->
                 <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800/60">
-                    <h4 class="text-slate-200 font-bold mb-1.5 uppercase tracking-wider text-[10px] flex items-center gap-1.5 border-b border-slate-800/40 pb-1.5">
+                    <h4
+                        class="text-slate-200 font-bold mb-1.5 uppercase tracking-wider text-[10px] flex items-center gap-1.5 border-b border-slate-800/40 pb-1.5">
                         <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span> Input / Output / Cache Tiers
                     </h4>
                     <p>
-                        Baseline financial values match live 2026 API operational values. Enabling <strong class="text-amber-400">High Mode</strong> applies a strict operational scaling factor \( \phi = 1.50 \) directly across Input, Cache Write, Cache Read, and Output parameters to represent dynamic infrastructure premium loads.
+                        Baseline financial values match live API rates from Cursor’s models &amp; pricing docs (standard
+                        mode). Optional <strong class="text-amber-400">fast mode</strong> in the IDE uses higher
+                        per-token rates per model (commonly 2×; see docs)—not duplicated as extra rows here. Enabling
+                        <strong class="text-amber-400">High Mode</strong> in this dashboard applies \( \phi = 1.50 \)
+                        across Input, Cache Write, Cache Read, and Output for simulation only.
                     </p>
                 </div>
 
                 <!-- Multiplier Logic -->
                 <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800/60">
-                    <h4 class="text-slate-200 font-bold mb-1.5 uppercase tracking-wider text-[10px] flex items-center gap-1.5 border-b border-slate-800/40 pb-1.5">
+                    <h4
+                        class="text-slate-200 font-bold mb-1.5 uppercase tracking-wider text-[10px] flex items-center gap-1.5 border-b border-slate-800/40 pb-1.5">
                         <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Cost Multiplier Factor (\(M\))
                     </h4>
                     <p>
-                        The pricing multiplier indicates how expensive a model's base input rate is compared to the baseline rate (\( C_{base} = \$1.25 \) per 1M tokens):
+                        The pricing multiplier indicates how expensive a model's base input rate is compared to the
+                        baseline rate (\( C_{base} = \$1.25 \) per 1M tokens):
                         $$M = \frac{C_{input}}{C_{base}}$$
                         Values less than \( 1.0\times \) highlight budget-favorable processing states.
                     </p>
@@ -415,32 +549,42 @@
 
                 <!-- Simulated Cost calculation -->
                 <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800/60">
-                    <h4 class="text-slate-200 font-bold mb-1.5 uppercase tracking-wider text-[10px] flex items-center gap-1.5 border-b border-slate-800/40 pb-1.5">
+                    <h4
+                        class="text-slate-200 font-bold mb-1.5 uppercase tracking-wider text-[10px] flex items-center gap-1.5 border-b border-slate-800/40 pb-1.5">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Simulated Cost (\(S_{cost}\))
                     </h4>
                     <p>
-                        Determined dynamically by matching custom slider inputs for Input Tokens (\(T_{in}\)), Output Tokens (\(T_{out}\)), and Cache Match Ratio (\(R_{cache}\)):
-                        $$S_{cost} = \frac{T_{in}}{10^6} \left[ (1-R_{cache})C_{in} + R_{cache}C_{read} \right] + \frac{T_{out}}{10^6}C_{out}$$
-                        For models without native cache write mechanisms, standard input costs are applied automatically.
+                        Determined dynamically by matching custom slider inputs for Input Tokens (\(T_{in}\)), Output
+                        Tokens (\(T_{out}\)), and Cache Match Ratio (\(R_{cache}\)):
+                        $$S_{cost} = \frac{T_{in}}{10^6} \left[ (1-R_{cache})C_{in} + R_{cache}C_{read} \right] +
+                        \frac{T_{out}}{10^6}C_{out}$$
+                        For models without native cache write mechanisms, standard input costs are applied
+                        automatically.
                     </p>
                 </div>
 
                 <!-- Overall Efficiency -->
                 <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800/60">
-                    <h4 class="text-slate-200 font-bold mb-1.5 uppercase tracking-wider text-[10px] flex items-center gap-1.5 border-b border-slate-800/40 pb-1.5">
-                        <span class="w-1.5 h-1.5 rounded-full bg-fuchsia-500"></span> Balance Tier Score (\(E_{overall}\))
+                    <h4
+                        class="text-slate-200 font-bold mb-1.5 uppercase tracking-wider text-[10px] flex items-center gap-1.5 border-b border-slate-800/40 pb-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-fuchsia-500"></span> Balance Tier Score
+                        (\(E_{overall}\))
                     </h4>
                     <p>
                         Scores utilize a composite rating system combining raw capabilities and resource footprints:
-                        $$E_{overall} = (B_{swe} \times 0.65) + \left( \left(1 - \frac{\min(M, 15)}{15}\right) \times 100 \times 0.35 \right)$$
-                        Tier badging corresponds dynamically: 
-                        <br><span class="text-indigo-400 font-bold">S-Tier</span> (\(\ge 93\)), <span class="text-emerald-400 font-bold">A-Tier</span> (\(88\text{--}92\)), <span class="text-slate-400 font-bold">B-Tier</span> (\(80\text{--}87\)), <span class="text-rose-400 font-bold">C-Tier</span> (\(< 80\)).
-                    </p>
+                        $$E_{overall} = (B_{swe} \times 0.65) + \left( \left(1 - \frac{\min(M, 15)}{15}\right) \times
+                        100 \times 0.35 \right)$$
+                        Tier badging corresponds dynamically:
+                        <br><span class="text-indigo-400 font-bold">S-Tier</span> (\(\ge 93\)), <span
+                            class="text-emerald-400 font-bold">A-Tier</span> (\(88\text{--}92\)), <span
+                            class="text-slate-400 font-bold">B-Tier</span> (\(80\text{--}87\)), <span
+                            class="text-rose-400 font-bold">C-Tier</span> (\(< 80\)). </p>
                 </div>
 
             </div>
             <div class="pt-4 flex flex-col sm:flex-row justify-between items-center text-[10px] text-slate-500 gap-4">
-                <span>© 2026 Cursor AI Enterprise Pricing Suite. All rights reserved. Mathematical indexes update dynamically on simulator interaction.</span>
+                <span>© 2026 Cursor AI Enterprise Pricing Suite. All rights reserved. Mathematical indexes update
+                    dynamically on simulator interaction.</span>
                 <span class="flex items-center gap-1.5">
                     <i class="fa-solid fa-code"></i> Built for Cursor Professional developers.
                 </span>
@@ -467,10 +611,9 @@
             { name: "Claude 4.5 Opus", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 97, provider: "Anthropic", score: 93, color: "text-purple-400 font-bold" },
             { name: "Claude 4.5 Sonnet", input: 3.0, write: 3.75, read: 0.3, output: 15.0, bench: 95, provider: "Anthropic", score: 96, color: "text-indigo-300 font-bold" },
             { name: "Claude 4.6 Opus", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 98, provider: "Anthropic", score: 94, color: "text-purple-400 font-bold" },
-            { name: "Claude 4.6 Opus (Fast mode)", input: 30.0, write: 37.5, read: 3.0, output: 150.0, bench: 98, provider: "Anthropic", score: 68, color: "text-rose-400 font-black" },
             { name: "Claude 4.6 Sonnet", input: 3.0, write: 3.75, read: 0.3, output: 15.0, bench: 96, provider: "Anthropic", score: 97, color: "text-indigo-300 font-bold" },
             { name: "Claude 4.7 Opus", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 99, provider: "Anthropic", score: 95, color: "text-purple-400 font-black" },
-            { name: "Claude Opus 4.7 (fast mode)", input: 30.0, write: 37.5, read: 3.0, output: 150.0, bench: 99, provider: "Anthropic", score: 70, color: "text-rose-400 font-black" },
+            { name: "Claude Opus 4.8", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 97, provider: "Anthropic", score: 88, color: "text-purple-400 font-black" },
             { name: "Composer 1", input: 1.25, write: 0.0, read: 0.125, output: 10.0, bench: 85, provider: "Composer", score: 87, color: "text-emerald-400" },
             { name: "Composer 1.5", input: 3.5, write: 0.0, read: 0.35, output: 17.5, bench: 90, provider: "Composer", score: 89, color: "text-emerald-400" },
             { name: "Composer 2", input: 0.5, write: 0.0, read: 0.2, output: 2.5, bench: 82, provider: "Composer", score: 90, color: "text-emerald-400" },
@@ -480,8 +623,8 @@
             { name: "Gemini 3 Pro", input: 2.0, write: 0.0, read: 0.2, output: 12.0, bench: 92, provider: "Google", score: 91, color: "text-cyan-300 font-bold" },
             { name: "Gemini 3 Pro Image Preview", input: 2.0, write: 0.0, read: 0.2, output: 12.0, bench: 91, provider: "Google", score: 89, color: "text-cyan-300" },
             { name: "Gemini 3.1 Pro", input: 2.0, write: 0.0, read: 0.2, output: 12.0, bench: 93, provider: "Google", score: 92, color: "text-cyan-300 font-bold" },
+            { name: "Gemini 3.5 Flash", input: 1.5, write: 0.0, read: 0.15, output: 9.0, bench: 93, provider: "Google", score: 92, color: "text-cyan-400 font-bold" },
             { name: "GPT-5", input: 1.25, write: 0.0, read: 0.125, output: 10.0, bench: 91, provider: "OpenAI", score: 92, color: "text-white font-bold" },
-            { name: "GPT-5 Fast", input: 2.5, write: 0.0, read: 0.25, output: 20.0, bench: 91, provider: "OpenAI", score: 86, color: "text-white" },
             { name: "GPT-5 Mini", input: 0.25, write: 0.0, read: 0.025, output: 2.0, bench: 78, provider: "OpenAI", score: 86, color: "text-slate-400" },
             { name: "GPT-5-Codex", input: 1.25, write: 0.0, read: 0.125, output: 10.0, bench: 93, provider: "OpenAI", score: 94, color: "text-amber-300" },
             { name: "GPT-5.1 Codex", input: 1.25, write: 0.0, read: 0.125, output: 10.0, bench: 94, provider: "OpenAI", score: 95, color: "text-amber-400 font-bold" },
@@ -496,6 +639,7 @@
             { name: "GPT-5.5", input: 5.0, write: 0.0, read: 0.5, output: 30.0, bench: 99, provider: "OpenAI", score: 93, color: "text-rose-400 font-black" },
             { name: "Grok 4.20", input: 2.0, write: 0.0, read: 0.2, output: 6.0, bench: 89, provider: "Grok", score: 88, color: "text-purple-300" },
             { name: "Grok 4.3", input: 1.25, write: 0.0, read: 0.2, output: 2.5, bench: 88, provider: "Grok", score: 89, color: "text-purple-300" },
+            { name: "Grok Build 0.1", input: 1.0, write: 0.0, read: 0.2, output: 2.0, bench: 90, provider: "Grok", score: 91, color: "text-purple-300" },
             { name: "Kimi K2.5", input: 0.6, write: 0.0, read: 0.1, output: 3.0, bench: 83, provider: "Kimi", score: 86, color: "text-slate-400" }
         ];
 
@@ -550,7 +694,7 @@
         // Action Preset configuration loader
         function applyPreset(type) {
             const boxes = ['focus-top', 'focus-speed', 'focus-bughunt', 'focus-legacy', 'focus-boilerplate', 'focus-devops', 'focus-agent', 'focus-pixel', 'focus-privacy', 'focus-migrate', 'focus-sql', 'focus-reviewer'];
-            
+
             if (type === 'clear') {
                 boxes.forEach(b => document.getElementById(b).checked = false);
             } else if (type === 'budget') {
@@ -632,7 +776,7 @@
                 let currentWrite = model.write * premiumMod;
                 let currentRead = model.read * premiumMod;
                 let currentOutput = model.output * premiumMod;
-                
+
                 let relativeMultiplier = (currentInput / baselineRate).toFixed(1);
                 let simulatedRunCost = calculateRunValue(model, inputTokens, outputTokens, cacheHitRatio);
 
@@ -640,7 +784,7 @@
 
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-900/60 transition text-slate-300 border-b border-slate-900 duration-150 group";
-                
+
                 // Add sorting tags to facilitate table sorting
                 tr.setAttribute('data-name', model.name);
                 tr.setAttribute('data-input', currentInput);
@@ -699,7 +843,7 @@
         function sortTable(colIndex) {
             const tbody = document.getElementById('tableBody');
             const rows = Array.from(tbody.querySelectorAll('tr'));
-            
+
             if (currentSortCol === colIndex) {
                 sortAscending = !sortAscending;
             } else {
@@ -819,12 +963,12 @@
         function renderCompareDeckUI() {
             const container = document.getElementById('compareDeckContainer');
             const cardsZone = document.getElementById('compareCardsZone');
-            
+
             if (pinnedCompareDeck.length === 0) {
                 container.classList.add('translate-y-full');
                 return;
             }
-            
+
             container.classList.remove('translate-y-full');
             document.getElementById('compareCountMsg').innerText = `${pinnedCompareDeck.length} of 3 models pinned`;
 
@@ -855,7 +999,7 @@
 
             pinnedCompareDeck.forEach(name => {
                 const model = baseModelDataset.find(m => m.name === name);
-                
+
                 let currentInput = model.input * premiumMod;
                 let currentWrite = model.write * premiumMod;
                 let currentRead = model.read * premiumMod;
@@ -931,4 +1075,5 @@
         setGlobalMode('Standard');
     </script>
 </body>
+
 </html>
