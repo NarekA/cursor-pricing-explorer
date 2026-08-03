@@ -25,6 +25,16 @@ Two ways to see them in the dashboard:
 
 The dashboard’s **High simulation (1.5×)** toggle is what-if math only. It is not the same as Cursor Fast mode.
 
+## Score columns
+
+| Column | Source |
+| --- | --- |
+| **Coding Bench** | Editorial estimate of coding capability (0–100). Not a vendor benchmark. |
+| **Speed** | Editorial estimate of relative responsiveness (0–100). Cursor publishes no speed metric, so read it as ordering, not tokens/sec. A `Fast` row always ranks above its standard twin. |
+| **Overall** | Derived, not stored: `bench × 0.65 + (1 − min(input/1.25, 15) / 15) × 100 × 0.35`. Uses base input rates, so High simulation does not move it. Speed is excluded on purpose. |
+
+Only the per-million-token rates come from Cursor docs. `bench` and `speed` are hand-maintained judgement calls; `overallScore()` computes Overall at render time so it cannot drift from the formula the footer documents.
+
 ## Run locally
 
 The site is a single static HTML file:
@@ -43,7 +53,8 @@ Open http://localhost:8000.
    - Store prices in dollars per million tokens.
    - Use `0` when Cursor publishes no cache-write or cache-read rate; the simulator falls back to normal input pricing when no cache-read rate exists.
    - For Auto Balance / Intelligence, keep `variable: true` and `assumes: "<typical model>"` when the row is an example of routed pricing.
-   - Treat `bench` and `score` as editorial estimates, not vendor benchmarks.
+   - Treat `bench` and `speed` as editorial estimates, not vendor benchmarks. Do not add a `score` field — Overall is computed by `overallScore()`.
+   - Keep each Fast row's `speed` above its standard twin, and its `bench` equal to it (same model, faster serving).
 3. Search `runPickerAdvisor()` for renamed or removed models. Every recommendation must match a dataset `name`.
 4. Update the visible sync date and any time-limited pricing note (e.g. Sonnet 5 promo).
 5. Validate the page:
@@ -54,6 +65,8 @@ python3 -m http.server 8000
 
 Check the simulator, mode filters, provider filters, search, sorting, advisor presets, and the three-model comparison deck.
 
-If you add or reorder table columns, update `dataKeys` in `sortTable()`, the `sortTable(n)` indices in `<thead>`, the string-vs-numeric cutoff (`colIndex > 1`), and the empty-state `colspan`.
+If you add or reorder table columns, update `dataKeys` in `sortTable()`, the `sortTable(n)` indices in `<thead>`, the string-vs-numeric cutoff (`colIndex > 1`), and the empty-state `colspan`. These must stay equal: `<th>` count, `<td>` count in the row template, and the `colspan`.
+
+Footer explainer cards are capped at two columns (`lg:grid-cols-2`) because the display equations need roughly 350px; a four-column layout clipped them.
 
 6. Commit and push `main`. GitHub Pages publishes automatically from the branch.

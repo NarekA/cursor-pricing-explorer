@@ -589,9 +589,13 @@
                                     onclick="sortTable(8)">
                                     Coding Bench <i class="fa-solid fa-sort ml-1 opacity-50 text-[9px]"></i>
                                 </th>
-                                <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-indigo-400 text-center whitespace-nowrap"
+                                <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-slate-200 text-center whitespace-nowrap"
                                     onclick="sortTable(9)">
-                                    Overall Tier <i class="fa-solid fa-sort ml-1 opacity-50 text-[9px]"></i>
+                                    Speed <i class="fa-solid fa-sort ml-1 opacity-50 text-[9px]"></i>
+                                </th>
+                                <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-indigo-400 text-center whitespace-nowrap"
+                                    onclick="sortTable(10)">
+                                    Overall <i class="fa-solid fa-sort ml-1 opacity-50 text-[9px]"></i>
                                 </th>
                                 <th class="p-3.5 text-center text-slate-400 font-medium">Compare Deck</th>
                             </tr>
@@ -662,8 +666,10 @@
                 <i class="fa-solid fa-circle-info text-indigo-400 text-xs"></i>
                 How the calculations work
             </h3>
+            <!-- Two columns, not four: the display equations need ~350px and were being
+                 clipped inside 312px cards. -->
             <div
-                class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 text-[11px] text-slate-400 leading-relaxed border-b border-slate-800/60 pb-6">
+                class="grid grid-cols-1 lg:grid-cols-2 gap-6 text-[11px] text-slate-400 leading-relaxed border-b border-slate-800/60 pb-6">
 
                 <!-- Pricing Modifiers -->
                 <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800/60 min-w-0">
@@ -709,28 +715,42 @@
                     </p>
                 </div>
 
-                <!-- Overall Efficiency -->
+                <!-- Speed -->
                 <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800/60 min-w-0">
                     <h4
                         class="text-slate-200 font-bold mb-1.5 uppercase tracking-wider text-[10px] flex items-center gap-1.5 border-b border-slate-800/40 pb-1.5">
-                        <span class="w-1.5 h-1.5 rounded-full bg-fuchsia-500"></span> Balance Tier Score
-                        (\(E_{overall}\))
+                        <span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span> Speed
                     </h4>
                     <p>
-                        Scores utilize a composite rating system combining raw capabilities and resource footprints:
-                        $$E_{overall} = (B_{swe} \times 0.65) + \left( \left(1 - \frac{\min(M, 15)}{15}\right) \times
+                        A 0–100 <strong>editorial</strong> estimate of relative responsiveness, not a vendor metric —
+                        Cursor publishes no speed number. Smaller variants (Nano, Mini, Haiku, Luna, Flash, Composer)
+                        rank high; Opus-, Sol-, and Fable-class reasoning models rank low. A <strong
+                            class="text-amber-400">Fast</strong> row always ranks above its standard twin, since Fast
+                        mode buys latency at a higher per-token rate. Treat it as ordering, not as tokens per second.
+                    </p>
+                </div>
+
+                <!-- Overall -->
+                <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800/60 min-w-0">
+                    <h4
+                        class="text-slate-200 font-bold mb-1.5 uppercase tracking-wider text-[10px] flex items-center gap-1.5 border-b border-slate-800/40 pb-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-fuchsia-500"></span> Overall (\(E_{overall}\))
+                    </h4>
+                    <p>
+                        A single 0–100 number, computed per row rather than stored, weighing coding bench against cost
+                        efficiency:
+                        $$E_{overall} = (B_{code} \times 0.65) + \left( \left(1 - \frac{\min(M, 15)}{15}\right) \times
                         100 \times 0.35 \right)$$
-                        Tier badging corresponds dynamically:
-                        <br><span class="text-indigo-400 font-bold">S-Tier</span> (\(\ge 93\)), <span
-                            class="text-emerald-400 font-bold">A-Tier</span> (\(88\text{--}92\)), <span
-                            class="text-slate-400 font-bold">B-Tier</span> (\(80\text{--}87\)), <span
-                            class="text-rose-400 font-bold">C-Tier</span> (\(< 80\)). </p>
+                        It uses <strong>base</strong> input rates, so toggling High simulation does not move it. Speed
+                        is reported separately and is deliberately excluded, so a cheap fast model does not outrank a
+                        capable one on this column alone.
+                    </p>
                 </div>
 
             </div>
             <div class="pt-4 flex flex-col sm:flex-row justify-between items-center text-[10px] text-slate-500 gap-4">
-                <span>Independent pricing explorer. Rates sourced from Cursor docs; benchmark and balance scores are
-                    editorial estimates.</span>
+                <span>Independent pricing explorer. Rates sourced from Cursor docs; coding bench and speed are
+                    editorial estimates, and Overall is derived from them.</span>
                 <span class="flex items-center gap-1.5">
                     <i class="fa-solid fa-code"></i> Updated Aug 3, 2026
                 </span>
@@ -750,63 +770,64 @@
         let pinnedCompareDeck = []; // Tracks model names to compare
 
         // Rates from https://cursor.com/docs/models-and-pricing (+ model pages for Fast tiers).
-        // mode: auto | standard | fast. Bench/score are editorial estimates.
+        // mode: auto | standard | fast. bench and speed are editorial estimates, not vendor
+        // metrics — Cursor publishes neither. Overall is derived (see overallScore), not stored.
         // Auto Balance / Intelligence bill at the routed model's API rate; rows use typical examples.
         const baseModelDataset = [
-            { name: "Auto Cost", mode: "auto", input: 1.25, write: 1.25, read: 0.25, output: 6.0, bench: 93, provider: "Cursor", score: 93, color: "text-sky-400 font-bold" },
-            { name: "Auto Balance", mode: "auto", variable: true, assumes: "Claude Sonnet 5", input: 3.0, write: 3.75, read: 0.3, output: 15.0, bench: 96, provider: "Cursor", score: 95, color: "text-sky-300 font-bold" },
-            { name: "Auto Intelligence", mode: "auto", variable: true, assumes: "Claude Opus 5", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 98, provider: "Cursor", score: 94, color: "text-indigo-300 font-black" },
-            { name: "Claude 4 Sonnet", mode: "standard", input: 3.0, write: 3.75, read: 0.3, output: 15.0, bench: 94, provider: "Anthropic", score: 95, color: "text-indigo-400 font-bold" },
-            { name: "Claude 4 Sonnet 1M", mode: "standard", input: 6.0, write: 7.5, read: 0.6, output: 22.5, bench: 95, provider: "Anthropic", score: 91, color: "text-indigo-400" },
-            { name: "Claude 4.5 Haiku", mode: "standard", input: 1.0, write: 1.25, read: 0.1, output: 5.0, bench: 84, provider: "Anthropic", score: 88, color: "text-indigo-300" },
-            { name: "Claude 4.5 Opus", mode: "standard", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 97, provider: "Anthropic", score: 93, color: "text-purple-400 font-bold" },
-            { name: "Claude 4.5 Sonnet", mode: "standard", input: 3.0, write: 3.75, read: 0.3, output: 15.0, bench: 95, provider: "Anthropic", score: 96, color: "text-indigo-300 font-bold" },
-            { name: "Claude 4.6 Opus", mode: "standard", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 98, provider: "Anthropic", score: 94, color: "text-purple-400 font-bold" },
-            { name: "Claude 4.6 Sonnet", mode: "standard", input: 3.0, write: 3.75, read: 0.3, output: 15.0, bench: 96, provider: "Anthropic", score: 97, color: "text-indigo-300 font-bold" },
-            { name: "Claude 4.7 Opus", mode: "standard", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 99, provider: "Anthropic", score: 95, color: "text-purple-400 font-black" },
-            { name: "Claude 4.7 Opus (Fast)", mode: "fast", input: 30.0, write: 37.5, read: 3.0, output: 150.0, bench: 99, provider: "Anthropic", score: 82, color: "text-amber-300 font-black" },
-            { name: "Claude Opus 4.8", mode: "standard", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 97, provider: "Anthropic", score: 88, color: "text-purple-400 font-black" },
-            { name: "Claude Opus 4.8 (Fast)", mode: "fast", input: 10.0, write: 12.5, read: 1.0, output: 50.0, bench: 97, provider: "Anthropic", score: 84, color: "text-amber-300 font-black" },
-            { name: "Claude Fable 5", mode: "standard", input: 10.0, write: 12.5, read: 1.0, output: 50.0, bench: 98, provider: "Anthropic", score: 88, color: "text-fuchsia-300 font-black" },
-            { name: "Claude Opus 5", mode: "standard", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 99, provider: "Anthropic", score: 96, color: "text-purple-300 font-black" },
-            { name: "Claude Opus 5 (Fast)", mode: "fast", input: 10.0, write: 12.5, read: 1.0, output: 50.0, bench: 99, provider: "Anthropic", score: 90, color: "text-amber-200 font-black" },
-            { name: "Claude Sonnet 5", mode: "standard", input: 3.0, write: 3.75, read: 0.3, output: 15.0, bench: 98, provider: "Anthropic", score: 98, color: "text-indigo-200 font-black" },
-            { name: "Composer 2.5", mode: "standard", input: 0.5, write: 0.0, read: 0.2, output: 2.5, bench: 86, provider: "Composer", score: 92, color: "text-emerald-300 font-bold" },
-            { name: "Composer 2.5 (Fast)", mode: "fast", input: 3.0, write: 0.0, read: 0.0, output: 15.0, bench: 86, provider: "Composer", score: 88, color: "text-emerald-200 font-black" },
-            { name: "Gemini 2.5 Flash", mode: "standard", input: 0.3, write: 0.0, read: 0.03, output: 2.5, bench: 76, provider: "Google", score: 84, color: "text-cyan-400" },
-            { name: "Gemini 3 Flash", mode: "standard", input: 0.5, write: 0.0, read: 0.05, output: 3.0, bench: 80, provider: "Google", score: 87, color: "text-cyan-400 font-bold" },
-            { name: "Gemini 3 Pro", mode: "standard", input: 2.0, write: 0.0, read: 0.2, output: 12.0, bench: 92, provider: "Google", score: 91, color: "text-cyan-300 font-bold" },
-            { name: "Gemini 3 Pro Image Preview", mode: "standard", input: 2.0, write: 0.0, read: 0.2, output: 12.0, bench: 91, provider: "Google", score: 89, color: "text-cyan-300" },
-            { name: "Gemini 3.1 Pro", mode: "standard", input: 2.0, write: 0.0, read: 0.2, output: 12.0, bench: 93, provider: "Google", score: 92, color: "text-cyan-300 font-bold" },
-            { name: "Gemini 3.5 Flash", mode: "standard", input: 1.5, write: 0.0, read: 0.15, output: 9.0, bench: 93, provider: "Google", score: 92, color: "text-cyan-400 font-bold" },
-            { name: "Gemini 3.6 Flash", mode: "standard", input: 1.5, write: 0.0, read: 0.15, output: 7.5, bench: 94, provider: "Google", score: 94, color: "text-cyan-300 font-black" },
-            { name: "GLM 5.2", mode: "standard", input: 1.4, write: 0.0, read: 0.26, output: 4.4, bench: 89, provider: "Z.ai", score: 91, color: "text-lime-300 font-bold" },
-            { name: "GPT-5", mode: "standard", input: 1.25, write: 0.0, read: 0.125, output: 10.0, bench: 91, provider: "OpenAI", score: 92, color: "text-white font-bold" },
-            { name: "GPT-5 Fast", mode: "fast", input: 2.5, write: 0.0, read: 0.25, output: 20.0, bench: 91, provider: "OpenAI", score: 88, color: "text-amber-200 font-bold" },
-            { name: "GPT-5 Mini", mode: "standard", input: 0.25, write: 0.0, read: 0.025, output: 2.0, bench: 78, provider: "OpenAI", score: 86, color: "text-slate-400" },
-            { name: "GPT-5-Codex", mode: "standard", input: 1.25, write: 0.0, read: 0.125, output: 10.0, bench: 93, provider: "OpenAI", score: 94, color: "text-amber-300" },
-            { name: "GPT-5.1 Codex", mode: "standard", input: 1.25, write: 0.0, read: 0.125, output: 10.0, bench: 94, provider: "OpenAI", score: 95, color: "text-amber-400 font-bold" },
-            { name: "GPT-5.1 Codex Max", mode: "standard", input: 1.25, write: 0.0, read: 0.125, output: 10.0, bench: 95, provider: "OpenAI", score: 95, color: "text-amber-400 font-bold" },
-            { name: "GPT-5.1 Codex Mini", mode: "standard", input: 0.25, write: 0.0, read: 0.025, output: 2.0, bench: 81, provider: "OpenAI", score: 88, color: "text-slate-400" },
-            { name: "GPT-5.2", mode: "standard", input: 1.75, write: 0.0, read: 0.175, output: 14.0, bench: 94, provider: "OpenAI", score: 93, color: "text-white" },
-            { name: "GPT-5.2 Codex", mode: "standard", input: 1.75, write: 0.0, read: 0.175, output: 14.0, bench: 96, provider: "OpenAI", score: 95, color: "text-amber-400 font-bold" },
-            { name: "GPT-5.3 Codex", mode: "standard", input: 1.75, write: 0.0, read: 0.175, output: 14.0, bench: 97, provider: "OpenAI", score: 96, color: "text-amber-400 font-black" },
-            { name: "GPT-5.4", mode: "standard", input: 2.5, write: 0.0, read: 0.25, output: 15.0, bench: 96, provider: "OpenAI", score: 92, color: "text-white" },
-            { name: "GPT-5.4 (Fast)", mode: "fast", input: 5.0, write: 0.0, read: 0.5, output: 30.0, bench: 96, provider: "OpenAI", score: 86, color: "text-amber-200 font-bold" },
-            { name: "GPT-5.4 Mini", mode: "standard", input: 0.75, write: 0.0, read: 0.075, output: 4.5, bench: 85, provider: "OpenAI", score: 89, color: "text-slate-400" },
-            { name: "GPT-5.4 Nano", mode: "standard", input: 0.2, write: 0.0, read: 0.02, output: 1.25, bench: 75, provider: "OpenAI", score: 85, color: "text-slate-500" },
-            { name: "GPT-5.5", mode: "standard", input: 5.0, write: 0.0, read: 0.5, output: 30.0, bench: 99, provider: "OpenAI", score: 93, color: "text-rose-400 font-black" },
-            { name: "GPT-5.5 (Fast)", mode: "fast", input: 10.0, write: 0.0, read: 1.0, output: 60.0, bench: 99, provider: "OpenAI", score: 87, color: "text-amber-200 font-black" },
-            { name: "GPT-5.6 Luna", mode: "standard", input: 0.2, write: 0.25, read: 0.02, output: 1.2, bench: 87, provider: "OpenAI", score: 94, color: "text-sky-300 font-bold" },
-            { name: "GPT-5.6 Luna (Fast)", mode: "fast", input: 0.4, write: 0.5, read: 0.04, output: 2.4, bench: 87, provider: "OpenAI", score: 90, color: "text-amber-200 font-bold" },
-            { name: "GPT-5.6 Sol", mode: "standard", input: 5.0, write: 6.25, read: 0.5, output: 30.0, bench: 99, provider: "OpenAI", score: 95, color: "text-rose-300 font-black" },
-            { name: "GPT-5.6 Sol (Fast)", mode: "fast", input: 10.0, write: 12.5, read: 1.0, output: 60.0, bench: 99, provider: "OpenAI", score: 88, color: "text-amber-200 font-black" },
-            { name: "GPT-5.6 Terra", mode: "standard", input: 2.0, write: 2.5, read: 0.2, output: 12.0, bench: 96, provider: "OpenAI", score: 97, color: "text-amber-200 font-black" },
-            { name: "GPT-5.6 Terra (Fast)", mode: "fast", input: 4.0, write: 5.0, read: 0.4, output: 24.0, bench: 96, provider: "OpenAI", score: 91, color: "text-amber-100 font-black" },
-            { name: "Grok 4.5", mode: "standard", input: 2.0, write: 0.0, read: 0.0, output: 6.0, bench: 95, provider: "Grok", score: 96, color: "text-purple-300 font-black" },
-            { name: "Grok 4.5 (Fast)", mode: "fast", input: 4.0, write: 0.0, read: 0.0, output: 18.0, bench: 95, provider: "Grok", score: 90, color: "text-amber-200 font-black" },
-            { name: "Kimi K2.7 Code", mode: "standard", input: 0.95, write: 0.0, read: 0.19, output: 4.0, bench: 88, provider: "Moonshot", score: 91, color: "text-slate-300 font-bold" },
-            { name: "Kimi K3", mode: "standard", input: 3.0, write: 0.0, read: 0.3, output: 15.0, bench: 94, provider: "Moonshot", score: 93, color: "text-slate-200 font-black" }
+            { name: "Auto Cost", mode: "auto", input: 1.25, write: 1.25, read: 0.25, output: 6.0, bench: 88, speed: 88, provider: "Cursor", color: "text-sky-400 font-bold" },
+            { name: "Auto Balance", mode: "auto", variable: true, assumes: "Claude Sonnet 5", input: 3.0, write: 3.75, read: 0.3, output: 15.0, bench: 96, speed: 74, provider: "Cursor", color: "text-sky-300 font-bold" },
+            { name: "Auto Intelligence", mode: "auto", variable: true, assumes: "Claude Opus 5", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 98, speed: 58, provider: "Cursor", color: "text-indigo-300 font-black" },
+            { name: "Claude 4 Sonnet", mode: "standard", input: 3.0, write: 3.75, read: 0.3, output: 15.0, bench: 94, speed: 72, provider: "Anthropic", color: "text-indigo-400 font-bold" },
+            { name: "Claude 4 Sonnet 1M", mode: "standard", input: 6.0, write: 7.5, read: 0.6, output: 22.5, bench: 95, speed: 62, provider: "Anthropic", color: "text-indigo-400" },
+            { name: "Claude 4.5 Haiku", mode: "standard", input: 1.0, write: 1.25, read: 0.1, output: 5.0, bench: 84, speed: 94, provider: "Anthropic", color: "text-indigo-300" },
+            { name: "Claude 4.5 Opus", mode: "standard", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 97, speed: 52, provider: "Anthropic", color: "text-purple-400 font-bold" },
+            { name: "Claude 4.5 Sonnet", mode: "standard", input: 3.0, write: 3.75, read: 0.3, output: 15.0, bench: 95, speed: 74, provider: "Anthropic", color: "text-indigo-300 font-bold" },
+            { name: "Claude 4.6 Opus", mode: "standard", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 98, speed: 53, provider: "Anthropic", color: "text-purple-400 font-bold" },
+            { name: "Claude 4.6 Sonnet", mode: "standard", input: 3.0, write: 3.75, read: 0.3, output: 15.0, bench: 96, speed: 75, provider: "Anthropic", color: "text-indigo-300 font-bold" },
+            { name: "Claude 4.7 Opus", mode: "standard", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 99, speed: 54, provider: "Anthropic", color: "text-purple-400 font-black" },
+            { name: "Claude 4.7 Opus (Fast)", mode: "fast", input: 30.0, write: 37.5, read: 3.0, output: 150.0, bench: 99, speed: 76, provider: "Anthropic", color: "text-amber-300 font-black" },
+            { name: "Claude Opus 4.8", mode: "standard", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 97, speed: 55, provider: "Anthropic", color: "text-purple-400 font-black" },
+            { name: "Claude Opus 4.8 (Fast)", mode: "fast", input: 10.0, write: 12.5, read: 1.0, output: 50.0, bench: 97, speed: 78, provider: "Anthropic", color: "text-amber-300 font-black" },
+            { name: "Claude Fable 5", mode: "standard", input: 10.0, write: 12.5, read: 1.0, output: 50.0, bench: 98, speed: 48, provider: "Anthropic", color: "text-fuchsia-300 font-black" },
+            { name: "Claude Opus 5", mode: "standard", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 99, speed: 57, provider: "Anthropic", color: "text-purple-300 font-black" },
+            { name: "Claude Opus 5 (Fast)", mode: "fast", input: 10.0, write: 12.5, read: 1.0, output: 50.0, bench: 99, speed: 80, provider: "Anthropic", color: "text-amber-200 font-black" },
+            { name: "Claude Sonnet 5", mode: "standard", input: 3.0, write: 3.75, read: 0.3, output: 15.0, bench: 98, speed: 77, provider: "Anthropic", color: "text-indigo-200 font-black" },
+            { name: "Composer 2.5", mode: "standard", input: 0.5, write: 0.0, read: 0.2, output: 2.5, bench: 86, speed: 93, provider: "Composer", color: "text-emerald-300 font-bold" },
+            { name: "Composer 2.5 (Fast)", mode: "fast", input: 3.0, write: 0.0, read: 0.0, output: 15.0, bench: 86, speed: 98, provider: "Composer", color: "text-emerald-200 font-black" },
+            { name: "Gemini 2.5 Flash", mode: "standard", input: 0.3, write: 0.0, read: 0.03, output: 2.5, bench: 76, speed: 95, provider: "Google", color: "text-cyan-400" },
+            { name: "Gemini 3 Flash", mode: "standard", input: 0.5, write: 0.0, read: 0.05, output: 3.0, bench: 80, speed: 94, provider: "Google", color: "text-cyan-400 font-bold" },
+            { name: "Gemini 3 Pro", mode: "standard", input: 2.0, write: 0.0, read: 0.2, output: 12.0, bench: 92, speed: 70, provider: "Google", color: "text-cyan-300 font-bold" },
+            { name: "Gemini 3 Pro Image Preview", mode: "standard", input: 2.0, write: 0.0, read: 0.2, output: 12.0, bench: 91, speed: 72, provider: "Google", color: "text-cyan-300" },
+            { name: "Gemini 3.1 Pro", mode: "standard", input: 2.0, write: 0.0, read: 0.2, output: 12.0, bench: 93, speed: 71, provider: "Google", color: "text-cyan-300 font-bold" },
+            { name: "Gemini 3.5 Flash", mode: "standard", input: 1.5, write: 0.0, read: 0.15, output: 9.0, bench: 93, speed: 88, provider: "Google", color: "text-cyan-400 font-bold" },
+            { name: "Gemini 3.6 Flash", mode: "standard", input: 1.5, write: 0.0, read: 0.15, output: 7.5, bench: 94, speed: 90, provider: "Google", color: "text-cyan-300 font-black" },
+            { name: "GLM 5.2", mode: "standard", input: 1.4, write: 0.0, read: 0.26, output: 4.4, bench: 89, speed: 79, provider: "Z.ai", color: "text-lime-300 font-bold" },
+            { name: "GPT-5", mode: "standard", input: 1.25, write: 0.0, read: 0.125, output: 10.0, bench: 91, speed: 66, provider: "OpenAI", color: "text-white font-bold" },
+            { name: "GPT-5 Fast", mode: "fast", input: 2.5, write: 0.0, read: 0.25, output: 20.0, bench: 91, speed: 82, provider: "OpenAI", color: "text-amber-200 font-bold" },
+            { name: "GPT-5 Mini", mode: "standard", input: 0.25, write: 0.0, read: 0.025, output: 2.0, bench: 78, speed: 91, provider: "OpenAI", color: "text-slate-400" },
+            { name: "GPT-5-Codex", mode: "standard", input: 1.25, write: 0.0, read: 0.125, output: 10.0, bench: 93, speed: 65, provider: "OpenAI", color: "text-amber-300" },
+            { name: "GPT-5.1 Codex", mode: "standard", input: 1.25, write: 0.0, read: 0.125, output: 10.0, bench: 94, speed: 66, provider: "OpenAI", color: "text-amber-400 font-bold" },
+            { name: "GPT-5.1 Codex Max", mode: "standard", input: 1.25, write: 0.0, read: 0.125, output: 10.0, bench: 95, speed: 60, provider: "OpenAI", color: "text-amber-400 font-bold" },
+            { name: "GPT-5.1 Codex Mini", mode: "standard", input: 0.25, write: 0.0, read: 0.025, output: 2.0, bench: 81, speed: 90, provider: "OpenAI", color: "text-slate-400" },
+            { name: "GPT-5.2", mode: "standard", input: 1.75, write: 0.0, read: 0.175, output: 14.0, bench: 94, speed: 67, provider: "OpenAI", color: "text-white" },
+            { name: "GPT-5.2 Codex", mode: "standard", input: 1.75, write: 0.0, read: 0.175, output: 14.0, bench: 96, speed: 66, provider: "OpenAI", color: "text-amber-400 font-bold" },
+            { name: "GPT-5.3 Codex", mode: "standard", input: 1.75, write: 0.0, read: 0.175, output: 14.0, bench: 97, speed: 65, provider: "OpenAI", color: "text-amber-400 font-black" },
+            { name: "GPT-5.4", mode: "standard", input: 2.5, write: 0.0, read: 0.25, output: 15.0, bench: 96, speed: 64, provider: "OpenAI", color: "text-white" },
+            { name: "GPT-5.4 (Fast)", mode: "fast", input: 5.0, write: 0.0, read: 0.5, output: 30.0, bench: 96, speed: 74, provider: "OpenAI", color: "text-amber-200 font-bold" },
+            { name: "GPT-5.4 Mini", mode: "standard", input: 0.75, write: 0.0, read: 0.075, output: 4.5, bench: 85, speed: 89, provider: "OpenAI", color: "text-slate-400" },
+            { name: "GPT-5.4 Nano", mode: "standard", input: 0.2, write: 0.0, read: 0.02, output: 1.25, bench: 75, speed: 96, provider: "OpenAI", color: "text-slate-500" },
+            { name: "GPT-5.5", mode: "standard", input: 5.0, write: 0.0, read: 0.5, output: 30.0, bench: 99, speed: 55, provider: "OpenAI", color: "text-rose-400 font-black" },
+            { name: "GPT-5.5 (Fast)", mode: "fast", input: 10.0, write: 0.0, read: 1.0, output: 60.0, bench: 99, speed: 75, provider: "OpenAI", color: "text-amber-200 font-black" },
+            { name: "GPT-5.6 Luna", mode: "standard", input: 0.2, write: 0.25, read: 0.02, output: 1.2, bench: 87, speed: 95, provider: "OpenAI", color: "text-sky-300 font-bold" },
+            { name: "GPT-5.6 Luna (Fast)", mode: "fast", input: 0.4, write: 0.5, read: 0.04, output: 2.4, bench: 87, speed: 99, provider: "OpenAI", color: "text-amber-200 font-bold" },
+            { name: "GPT-5.6 Sol", mode: "standard", input: 5.0, write: 6.25, read: 0.5, output: 30.0, bench: 99, speed: 56, provider: "OpenAI", color: "text-rose-300 font-black" },
+            { name: "GPT-5.6 Sol (Fast)", mode: "fast", input: 10.0, write: 12.5, read: 1.0, output: 60.0, bench: 99, speed: 78, provider: "OpenAI", color: "text-amber-200 font-black" },
+            { name: "GPT-5.6 Terra", mode: "standard", input: 2.0, write: 2.5, read: 0.2, output: 12.0, bench: 96, speed: 76, provider: "OpenAI", color: "text-amber-200 font-black" },
+            { name: "GPT-5.6 Terra (Fast)", mode: "fast", input: 4.0, write: 5.0, read: 0.4, output: 24.0, bench: 96, speed: 88, provider: "OpenAI", color: "text-amber-100 font-black" },
+            { name: "Grok 4.5", mode: "standard", input: 2.0, write: 0.0, read: 0.0, output: 6.0, bench: 95, speed: 80, provider: "Grok", color: "text-purple-300 font-black" },
+            { name: "Grok 4.5 (Fast)", mode: "fast", input: 4.0, write: 0.0, read: 0.0, output: 18.0, bench: 95, speed: 92, provider: "Grok", color: "text-amber-200 font-black" },
+            { name: "Kimi K2.7 Code", mode: "standard", input: 0.95, write: 0.0, read: 0.19, output: 4.0, bench: 88, speed: 82, provider: "Moonshot", color: "text-slate-300 font-bold" },
+            { name: "Kimi K3", mode: "standard", input: 3.0, write: 0.0, read: 0.3, output: 15.0, bench: 94, speed: 68, provider: "Moonshot", color: "text-slate-200 font-black" }
         ];
 
         // Core visual calculation thresholds driving color indicators
@@ -830,11 +851,19 @@
             return "text-rose-400 font-black bg-rose-950/40 border border-rose-900/40 rounded px-1.5 py-0.5";
         }
 
-        function getTierBadge(val) {
-            if (val >= 93) return `<span class="px-2 py-0.5 rounded text-[10px] font-black bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">S-Tier (${val})</span>`;
-            if (val >= 88) return `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">A-Tier (${val})</span>`;
-            if (val >= 80) return `<span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-800 text-slate-300 border border-slate-750">B-Tier (${val})</span>`;
-            return `<span class="px-2 py-0.5 rounded text-[10px] font-medium bg-rose-950/25 text-rose-400 border border-rose-900/30">C-Tier (${val})</span>`;
+        // Overall = coding bench weighted against cost efficiency, on base rates so the number
+        // describes the model rather than the current simulator toggle. Speed is reported on its
+        // own column and deliberately left out of this composite.
+        function overallScore(model) {
+            const costFactor = 1 - Math.min(model.input / 1.25, 15) / 15;
+            return Math.round(model.bench * 0.65 + costFactor * 100 * 0.35);
+        }
+
+        function getSpeedClass(val) {
+            if (val >= 90) return "text-emerald-400 font-bold";
+            if (val >= 75) return "text-slate-200 font-semibold";
+            if (val >= 60) return "text-slate-400";
+            return "text-rose-400/80";
         }
 
         function getProgressBadge(val) {
@@ -986,7 +1015,8 @@
                 tr.setAttribute('data-simcost', simulatedRunCost);
                 tr.setAttribute('data-mult', relativeMultiplier);
                 tr.setAttribute('data-bench', model.bench);
-                tr.setAttribute('data-score', model.score);
+                tr.setAttribute('data-speed', model.speed);
+                tr.setAttribute('data-score', overallScore(model));
 
                 // Check compare status
                 const isPinned = pinnedCompareDeck.includes(model.name);
@@ -1002,7 +1032,8 @@
                     <td class="p-3.5 font-mono text-right font-black text-indigo-400 bg-indigo-950/5">$${simulatedRunCost.toFixed(4)}</td>
                     <td class="p-3.5 text-center font-mono ${getMultiplierVisualClass(relativeMultiplier)}">${relativeMultiplier}x</td>
                     <td class="p-3.5 text-center font-mono">${getProgressBadge(model.bench)}</td>
-                    <td class="p-3.5 text-center font-mono">${getTierBadge(model.score)}</td>
+                    <td class="p-3.5 text-center font-mono ${getSpeedClass(model.speed)}">${model.speed}</td>
+                    <td class="p-3.5 text-center font-mono font-black text-indigo-300">${overallScore(model)}</td>
                     <td class="p-3.5 text-center">
                         <button onclick="toggleCompareModel('${model.name}')" class="transition transform hover:scale-115">
                             <i class="${pinIcon} text-sm"></i>
@@ -1023,7 +1054,7 @@
             } else {
                 document.getElementById('avg-cost-badge').innerHTML = `<span class="text-slate-600">No Models Filtered</span>`;
                 tbody.innerHTML = `
-                    <tr><td colspan="11" class="p-10 text-center text-slate-500 text-xs">
+                    <tr><td colspan="12" class="p-10 text-center text-slate-500 text-xs">
                         No rows match this mode and provider combination.
                     </td></tr>
                 `;
@@ -1057,7 +1088,7 @@
                 currentSortCol = colIndex;
             }
 
-            const dataKeys = ['data-name', 'data-mode', 'data-input', 'data-write', 'data-read', 'data-output', 'data-simcost', 'data-mult', 'data-bench', 'data-score'];
+            const dataKeys = ['data-name', 'data-mode', 'data-input', 'data-write', 'data-read', 'data-output', 'data-simcost', 'data-mult', 'data-bench', 'data-speed', 'data-score'];
             const targetKey = dataKeys[colIndex];
 
             // Toggle Sort Icons State visual Indicators
@@ -1262,12 +1293,16 @@
                             <span class="font-bold text-amber-500">${mult}x</span>
                         </div>
                         <div class="flex justify-between items-center border-t border-slate-900 pt-2">
-                            <span class="text-slate-500">SWE Benchmarks:</span>
+                            <span class="text-slate-500">Coding Bench:</span>
                             <span class="font-black text-emerald-400">${model.bench}%</span>
                         </div>
                         <div class="flex justify-between items-center border-t border-slate-900 pt-2">
-                            <span class="text-slate-500">Overall Balance Score:</span>
-                            <span class="font-black text-indigo-300">${model.score} / 100</span>
+                            <span class="text-slate-500">Speed:</span>
+                            <span class="font-black ${getSpeedClass(model.speed)}">${model.speed} / 100</span>
+                        </div>
+                        <div class="flex justify-between items-center border-t border-slate-900 pt-2">
+                            <span class="text-slate-500">Overall:</span>
+                            <span class="font-black text-indigo-300">${overallScore(model)} / 100</span>
                         </div>
                     </div>
 
