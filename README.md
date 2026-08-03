@@ -18,7 +18,10 @@ Each billing mode is its **own row** so you can compare them side by side:
 | **Auto Balance** | Bills at the routed model’s API rate — simulator uses **Claude Sonnet 5** as a typical example |
 | **Auto Intelligence** | Bills at the routed model’s API rate — simulator uses **Claude Opus 5** as a typical example |
 
-Use the **Filter by mode** chips (All / Standard / Fast / Auto) to narrow the matrix.
+Two ways to see them in the dashboard:
+
+- The **Mode** column in the rate matrix badges every row as `Std`, `Fast`, or `Auto` (Auto rows also show which model they bill as).
+- The **Mode** filter chips sit directly above the table — `All modes` / `Standard` / `Fast` / `Auto` — next to the provider chips. The row counter on the right shows how many rows the current filters and search leave visible.
 
 The dashboard’s **High simulation (1.5×)** toggle is what-if math only. It is not the same as Cursor Fast mode.
 
@@ -50,5 +53,7 @@ python3 -m http.server 8000
 ```
 
 Check the simulator, mode filters, provider filters, search, sorting, advisor presets, and the three-model comparison deck.
+
+If you add or reorder table columns, update `dataKeys` in `sortTable()`, the `sortTable(n)` indices in `<thead>`, the string-vs-numeric cutoff (`colIndex > 1`), and the empty-state `colspan`.
 
 6. Commit and push `main`. GitHub Pages publishes automatically from the branch.

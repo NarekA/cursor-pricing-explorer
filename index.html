@@ -14,7 +14,6 @@
     <!-- FontAwesome for robust, semantic developer iconography -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- MathJax for rendering gorgeous mathematical formula guidelines -->
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         :root {
@@ -74,6 +73,15 @@
             position: sticky;
             top: 0;
             z-index: 10;
+        }
+
+        /* Display equations are wider than a grid column; scroll them instead of
+           letting them stretch the grid and push the footer off-canvas. */
+        mjx-container[display="true"] {
+            max-width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding-bottom: 2px;
         }
 
         @keyframes slideUp {
@@ -141,7 +149,7 @@
 <body
     class="text-slate-100 font-sans min-h-screen antialiased selection:bg-indigo-500/30 selection:text-white">
 
-    <div class="max-w-[1700px] mx-auto p-4 md:p-6 lg:p-8 space-y-7 pb-32">
+    <div class="max-w-[1700px] mx-auto p-4 md:p-6 lg:p-8 space-y-7">
 
         <!-- Header Section -->
         <header class="instrument-panel rounded-2xl border p-5 md:p-7 flex flex-col xl:flex-row xl:items-end justify-between gap-6">
@@ -158,7 +166,7 @@
                     Simulate a real prompt, compare model economics, and choose a model for the work—not the hype.
                 </p>
                 <div class="font-data flex flex-wrap gap-x-5 gap-y-2 text-[10px] uppercase tracking-wider text-slate-500">
-                    <span><strong class="text-slate-200" id="modelCount">—</strong> standard-rate models</span>
+                    <span><strong class="text-slate-200" id="modelCount">—</strong> priced rows across standard, fast &amp; auto</span>
                     <span>Source: <a href="https://cursor.com/docs/models-and-pricing" target="_blank"
                             rel="noopener" class="text-indigo-300 hover:text-indigo-200 underline underline-offset-4">Cursor docs</a></span>
                     <span>Synced Aug 3, 2026</span>
@@ -431,15 +439,65 @@
                     </div>
                 </div>
 
-                <!-- Mode + Provider Filters -->
-                <div class="border-t border-slate-800 pt-3 space-y-3">
+            </div>
+        </div>
+
+        <!-- Middle Section: Recommendation Cards Panel -->
+        <div class="space-y-4">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-wand-magic-sparkles text-amber-400 text-xs"></i> Recommendations for selected
+                workloads
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4" id="advisorContainer">
+                <!-- Recommendations cards rendered dynamically here -->
+            </div>
+        </div>
+
+        <!-- Bottom Large Component: Sortable Data Matrix & Comparison Deck -->
+        <div class="grid grid-cols-1 gap-6">
+            <div
+                class="instrument-panel rounded-2xl border overflow-hidden flex flex-col justify-between">
+
+                <!-- Table Search, Column Toggles and Controls -->
+                <div
+                    class="p-5 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900/60">
                     <div>
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Filter by
-                            mode</span>
+                        <h2 class="font-display text-lg font-semibold text-white">Model rate matrix</h2>
+                        <p class="text-xs text-slate-400 mt-0.5">Every billing mode is its own row — check the
+                            <strong class="text-slate-300">Mode</strong> column, or use the mode filter below to
+                            show only Standard, Fast, or Auto. Sort any column; pin up to three models to compare.</p>
+                        <p class="text-[11px] text-amber-400/90 mt-2 leading-relaxed max-w-3xl">
+                            <i class="fa-solid fa-bolt text-amber-500 mr-1"></i>
+                            <strong>Auto Cost</strong> uses fixed rates;
+                            <strong>Auto Balance</strong> / <strong>Auto Intelligence</strong> bill at the routed
+                            model’s API rate (simulator examples: Sonnet 5 / Opus 5).
+                            <strong>Fast</strong> rows use published Fast-tier rates (often ~2×; Opus Fast can be
+                            higher). Claude Sonnet 5 list rate shown; launch promo is $2/$10 through Aug 31, 2026.
+                            Source:
+                            <a href="https://cursor.com/docs/models-and-pricing" class="underline hover:text-amber-300"
+                                target="_blank" rel="noopener">Cursor docs</a>.
+                        </p>
+                    </div>
+                    <div class="flex gap-3">
+                        <div class="relative">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-500 text-xs"></i>
+                            <input type="search" id="tableSearch" oninput="filterTable()" placeholder="Search models…"
+                                aria-label="Search models"
+                                class="bg-slate-950 border border-slate-800 text-xs rounded-xl pl-8 pr-4 py-2 w-48 focus:outline-none focus:border-indigo-500 text-slate-200 transition">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row filters: these narrow the table below, nothing else -->
+                <div class="px-5 py-4 border-b border-slate-800 bg-slate-950/40 flex flex-col lg:flex-row lg:items-start gap-x-8 gap-y-4">
+                    <div>
+                        <span class="font-data text-[10px] font-bold text-slate-300 uppercase tracking-[0.16em] block mb-2">
+                            Mode
+                        </span>
                         <div class="flex flex-wrap gap-2" id="modeFilters">
                             <button type="button" onclick="toggleModeFilter('All')"
-                                class="px-3 py-1 text-[10px] font-black rounded-lg bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 transition shadow-inner"
-                                id="mode-All">All Modes</button>
+                                class="px-3 py-1 text-[10px] font-black rounded-lg bg-indigo-600 text-white border border-indigo-500/20 transition shadow-md"
+                                id="mode-All">All modes</button>
                             <button type="button" onclick="toggleModeFilter('standard')"
                                 class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition"
                                 id="mode-standard">Standard</button>
@@ -451,13 +509,14 @@
                                 id="mode-auto">Auto</button>
                         </div>
                     </div>
-                    <div>
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Filter by
-                            provider</span>
+                    <div class="lg:border-l lg:border-slate-800 lg:pl-8">
+                        <span class="font-data text-[10px] font-bold text-slate-300 uppercase tracking-[0.16em] block mb-2">
+                            Provider
+                        </span>
                         <div class="flex flex-wrap gap-2" id="providerFilters">
                             <button type="button" onclick="toggleProviderFilter('All')"
-                                class="px-3 py-1 text-[10px] font-black rounded-lg bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 transition shadow-inner"
-                                id="prov-All">All Models</button>
+                                class="px-3 py-1 text-[10px] font-black rounded-lg bg-indigo-600 text-white border border-indigo-500/20 transition shadow-md"
+                                id="prov-All">All providers</button>
                             <button type="button" onclick="toggleProviderFilter('Cursor')"
                                 class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition"
                                 id="prov-Cursor">Cursor Auto</button>
@@ -484,54 +543,8 @@
                                 id="prov-Moonshot">Moonshot</button>
                         </div>
                     </div>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Middle Section: Recommendation Cards Panel -->
-        <div class="space-y-4">
-            <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                <i class="fa-solid fa-wand-magic-sparkles text-amber-400 text-xs"></i> Recommendations for selected
-                workloads
-            </h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4" id="advisorContainer">
-                <!-- Recommendations cards rendered dynamically here -->
-            </div>
-        </div>
-
-        <!-- Bottom Large Component: Sortable Data Matrix & Comparison Deck -->
-        <div class="grid grid-cols-1 gap-6">
-            <div
-                class="instrument-panel rounded-2xl border overflow-hidden flex flex-col justify-between">
-
-                <!-- Table Search, Column Toggles and Controls -->
-                <div
-                    class="p-5 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900/60">
-                    <div>
-                        <h2 class="font-display text-lg font-semibold text-white">Model rate matrix</h2>
-                        <p class="text-xs text-slate-400 mt-0.5">Sort any column. Pin up to three models for a
-                            side-by-side comparison.</p>
-                        <p class="text-[11px] text-amber-400/90 mt-2 leading-relaxed max-w-3xl">
-                            <i class="fa-solid fa-bolt text-amber-500 mr-1"></i>
-                            Each mode is its own row. <strong>Auto Cost</strong> uses fixed rates;
-                            <strong>Auto Balance</strong> / <strong>Auto Intelligence</strong> bill at the routed
-                            model’s API rate (simulator examples: Sonnet 5 / Opus 5).
-                            <strong>Fast</strong> rows use published Fast-tier rates (often ~2×; Opus Fast can be
-                            higher). Claude Sonnet 5 list rate shown; launch promo is $2/$10 through Aug 31, 2026.
-                            Source:
-                            <a href="https://cursor.com/docs/models-and-pricing" class="underline hover:text-amber-300"
-                                target="_blank" rel="noopener">Cursor docs</a>.
-                        </p>
-                    </div>
-                    <div class="flex gap-3">
-                        <div class="relative">
-                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-500 text-xs"></i>
-                            <input type="search" id="tableSearch" oninput="filterTable()" placeholder="Search models…"
-                                aria-label="Search models"
-                                class="bg-slate-950 border border-slate-800 text-xs rounded-xl pl-8 pr-4 py-2 w-48 focus:outline-none focus:border-indigo-500 text-slate-200 transition">
-                        </div>
-                    </div>
+                    <div class="lg:ml-auto font-data text-[10px] text-slate-500 uppercase tracking-wider lg:text-right lg:self-end"
+                        id="rowCountMsg">—</div>
                 </div>
 
                 <!-- High-Fidelity Table Interface -->
@@ -544,36 +557,40 @@
                                     onclick="sortTable(0)">
                                     Model Engine <i class="fa-solid fa-sort ml-1 opacity-50 text-[9px]"></i>
                                 </th>
-                                <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-slate-200 font-mono text-right whitespace-nowrap"
+                                <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-slate-200 whitespace-nowrap"
                                     onclick="sortTable(1)">
-                                    Input / 1M <i class="fa-solid fa-sort ml-1 opacity-50 text-[9px]"></i>
+                                    Mode <i class="fa-solid fa-sort ml-1 opacity-50 text-[9px]"></i>
                                 </th>
                                 <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-slate-200 font-mono text-right whitespace-nowrap"
                                     onclick="sortTable(2)">
-                                    Cache Write <i class="fa-solid fa-sort ml-1 opacity-50 text-[9px]"></i>
+                                    Input / 1M <i class="fa-solid fa-sort ml-1 opacity-50 text-[9px]"></i>
                                 </th>
                                 <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-slate-200 font-mono text-right whitespace-nowrap"
                                     onclick="sortTable(3)">
-                                    Cache Read <i class="fa-solid fa-sort ml-1 opacity-50 text-[9px]"></i>
+                                    Cache Write <i class="fa-solid fa-sort ml-1 opacity-50 text-[9px]"></i>
                                 </th>
                                 <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-slate-200 font-mono text-right whitespace-nowrap"
                                     onclick="sortTable(4)">
-                                    Output / 1M <i class="fa-solid fa-sort ml-1 opacity-50 text-[9px]"></i>
+                                    Cache Read <i class="fa-solid fa-sort ml-1 opacity-50 text-[9px]"></i>
                                 </th>
                                 <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-slate-200 font-mono text-right whitespace-nowrap"
                                     onclick="sortTable(5)">
+                                    Output / 1M <i class="fa-solid fa-sort ml-1 opacity-50 text-[9px]"></i>
+                                </th>
+                                <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-slate-200 font-mono text-right whitespace-nowrap"
+                                    onclick="sortTable(6)">
                                     Simulated Cost <i class="fa-solid fa-sort ml-1 opacity-50 text-[9px]"></i>
                                 </th>
                                 <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-slate-200 text-center whitespace-nowrap"
-                                    onclick="sortTable(6)">
+                                    onclick="sortTable(7)">
                                     Cost Multiplier <i class="fa-solid fa-sort ml-1 opacity-50 text-[9px]"></i>
                                 </th>
                                 <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-slate-200 text-center whitespace-nowrap"
-                                    onclick="sortTable(7)">
+                                    onclick="sortTable(8)">
                                     Coding Bench <i class="fa-solid fa-sort ml-1 opacity-50 text-[9px]"></i>
                                 </th>
                                 <th class="p-3.5 cursor-pointer hover:bg-slate-800/60 text-indigo-400 text-center whitespace-nowrap"
-                                    onclick="sortTable(8)">
+                                    onclick="sortTable(9)">
                                     Overall Tier <i class="fa-solid fa-sort ml-1 opacity-50 text-[9px]"></i>
                                 </th>
                                 <th class="p-3.5 text-center text-slate-400 font-medium">Compare Deck</th>
@@ -649,7 +666,7 @@
                 class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 text-[11px] text-slate-400 leading-relaxed border-b border-slate-800/60 pb-6">
 
                 <!-- Pricing Modifiers -->
-                <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800/60">
+                <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800/60 min-w-0">
                     <h4
                         class="text-slate-200 font-bold mb-1.5 uppercase tracking-wider text-[10px] flex items-center gap-1.5 border-b border-slate-800/40 pb-1.5">
                         <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span> Input / Output / Cache Tiers
@@ -663,7 +680,7 @@
                 </div>
 
                 <!-- Multiplier Logic -->
-                <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800/60">
+                <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800/60 min-w-0">
                     <h4
                         class="text-slate-200 font-bold mb-1.5 uppercase tracking-wider text-[10px] flex items-center gap-1.5 border-b border-slate-800/40 pb-1.5">
                         <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Cost Multiplier Factor (\(M\))
@@ -677,7 +694,7 @@
                 </div>
 
                 <!-- Simulated Cost calculation -->
-                <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800/60">
+                <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800/60 min-w-0">
                     <h4
                         class="text-slate-200 font-bold mb-1.5 uppercase tracking-wider text-[10px] flex items-center gap-1.5 border-b border-slate-800/40 pb-1.5">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Simulated Cost (\(S_{cost}\))
@@ -693,7 +710,7 @@
                 </div>
 
                 <!-- Overall Efficiency -->
-                <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800/60">
+                <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800/60 min-w-0">
                     <h4
                         class="text-slate-200 font-bold mb-1.5 uppercase tracking-wider text-[10px] flex items-center gap-1.5 border-b border-slate-800/40 pb-1.5">
                         <span class="w-1.5 h-1.5 rounded-full bg-fuchsia-500"></span> Balance Tier Score
@@ -888,13 +905,14 @@
 
         function modeBadge(model) {
             if (model.mode === 'fast') {
-                return '<span class="ml-2 px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-amber-500/15 text-amber-300 border border-amber-500/30">Fast</span>';
+                return '<span class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-amber-500/15 text-amber-300 border border-amber-500/30">Fast</span>';
             }
             if (model.mode === 'auto') {
-                const label = model.variable ? `Auto · typ. ${model.assumes}` : 'Auto · fixed';
-                return `<span class="ml-2 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-sky-500/10 text-sky-300 border border-sky-500/25">${label}</span>`;
+                const chip = '<span class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-sky-500/10 text-sky-300 border border-sky-500/25">Auto</span>';
+                const note = model.variable ? `bills as ${model.assumes}` : 'fixed rate';
+                return `${chip}<span class="block text-[9px] text-slate-500 mt-1 leading-tight">${note}</span>`;
             }
-            return '<span class="ml-2 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-slate-800 text-slate-400 border border-slate-700">Std</span>';
+            return '<span class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-slate-800 text-slate-400 border border-slate-700">Std</span>';
         }
 
         // Live Cost Runs Calculator logic integration
@@ -960,6 +978,7 @@
 
                 // Add sorting tags to facilitate table sorting
                 tr.setAttribute('data-name', model.name);
+                tr.setAttribute('data-mode', model.mode);
                 tr.setAttribute('data-input', currentInput);
                 tr.setAttribute('data-write', currentWrite);
                 tr.setAttribute('data-read', currentRead);
@@ -974,7 +993,8 @@
                 const pinIcon = isPinned ? 'fa-solid fa-square-check text-indigo-400' : 'fa-regular fa-square text-slate-600 group-hover:text-slate-400';
 
                 tr.innerHTML = `
-                    <td class="p-3.5 whitespace-nowrap ${model.color}">${model.name}${modeBadge(model)}</td>
+                    <td class="p-3.5 whitespace-nowrap ${model.color}">${model.name}</td>
+                    <td class="p-3.5 whitespace-nowrap align-top">${modeBadge(model)}</td>
                     <td class="p-3.5 font-mono text-right ${getCostMetricClass(currentInput, 'input')}">$${currentInput.toFixed(2)}</td>
                     <td class="p-3.5 font-mono text-right ${getCostMetricClass(currentWrite, 'write')}">${currentWrite > 0 ? '$' + currentWrite.toFixed(2) : '-'}</td>
                     <td class="p-3.5 font-mono text-right ${getCostMetricClass(currentRead, 'read')}">${currentRead > 0 ? '$' + currentRead.toFixed(3) : '-'}</td>
@@ -1002,14 +1022,27 @@
                 `;
             } else {
                 document.getElementById('avg-cost-badge').innerHTML = `<span class="text-slate-600">No Models Filtered</span>`;
+                tbody.innerHTML = `
+                    <tr><td colspan="11" class="p-10 text-center text-slate-500 text-xs">
+                        No rows match this mode and provider combination.
+                    </td></tr>
+                `;
             }
+
+            filterTable();
         }
 
         function filterTable() {
             const query = document.getElementById('tableSearch').value.toLowerCase();
-            document.querySelectorAll('#tableBody tr').forEach(row => {
-                row.style.display = row.innerText.toLowerCase().includes(query) ? "" : "none";
+            const rows = document.querySelectorAll('#tableBody tr[data-name]');
+            let visible = 0;
+            rows.forEach(row => {
+                const match = row.textContent.toLowerCase().includes(query);
+                row.style.display = match ? "" : "none";
+                if (match) visible++;
             });
+            document.getElementById('rowCountMsg').textContent =
+                `${visible} of ${baseModelDataset.length} rows`;
         }
 
         // Sorting Logic Implementation across custom numerical indicators
@@ -1024,7 +1057,7 @@
                 currentSortCol = colIndex;
             }
 
-            const dataKeys = ['data-name', 'data-input', 'data-write', 'data-read', 'data-output', 'data-simcost', 'data-mult', 'data-bench', 'data-score'];
+            const dataKeys = ['data-name', 'data-mode', 'data-input', 'data-write', 'data-read', 'data-output', 'data-simcost', 'data-mult', 'data-bench', 'data-score'];
             const targetKey = dataKeys[colIndex];
 
             // Toggle Sort Icons State visual Indicators
@@ -1041,7 +1074,8 @@
                 let valA = a.getAttribute(targetKey);
                 let valB = b.getAttribute(targetKey);
 
-                if (colIndex !== 0) {
+                // Model Engine (0) and Mode (1) are text columns; the rest are numeric.
+                if (colIndex > 1) {
                     return sortAscending ? parseFloat(valA) - parseFloat(valB) : parseFloat(valB) - parseFloat(valA);
                 }
                 return sortAscending ? valA.localeCompare(valB) : valB.localeCompare(valA);
@@ -1139,6 +1173,7 @@
 
             if (pinnedCompareDeck.length === 0) {
                 container.classList.add('translate-y-full');
+                reserveSpaceForCompareDeck();
                 return;
             }
 
@@ -1158,7 +1193,24 @@
                 `;
                 cardsZone.appendChild(card);
             });
+
+            reserveSpaceForCompareDeck();
         }
+
+        // The deck is fixed to the viewport bottom and grows when it wraps on narrow
+        // screens, so reserve its measured height instead of a fixed padding guess.
+        function reserveSpaceForCompareDeck() {
+            const container = document.getElementById('compareDeckContainer');
+            if (pinnedCompareDeck.length === 0) {
+                document.body.style.paddingBottom = '';
+                return;
+            }
+            requestAnimationFrame(() => {
+                document.body.style.paddingBottom = `${container.offsetHeight + 24}px`;
+            });
+        }
+
+        window.addEventListener('resize', reserveSpaceForCompareDeck);
 
         function triggerCompareMatrixModal() {
             const modal = document.getElementById('compareModal');
