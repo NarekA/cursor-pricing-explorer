@@ -431,35 +431,58 @@
                     </div>
                 </div>
 
-                <!-- Provider-Specific Group Filtering Pills -->
-                <div class="border-t border-slate-800 pt-3">
-                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Filter by
-                        provider</span>
-                    <div class="flex flex-wrap gap-2" id="providerFilters">
-                        <button onclick="toggleProviderFilter('All')"
-                            class="px-3 py-1 text-[10px] font-black rounded-lg bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 transition shadow-inner"
-                            id="prov-All">All Models</button>
-                        <button onclick="toggleProviderFilter('Anthropic')"
-                            class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition"
-                            id="prov-Anthropic">Anthropic</button>
-                        <button onclick="toggleProviderFilter('OpenAI')"
-                            class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition"
-                            id="prov-OpenAI">OpenAI</button>
-                        <button onclick="toggleProviderFilter('Google')"
-                            class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition"
-                            id="prov-Google">Google</button>
-                        <button onclick="toggleProviderFilter('Grok')"
-                            class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition"
-                            id="prov-Grok">Grok</button>
-                        <button onclick="toggleProviderFilter('Composer')"
-                            class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition"
-                            id="prov-Composer">Composer Native</button>
-                        <button onclick="toggleProviderFilter('Z.ai')"
-                            class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition"
-                            id="prov-Z.ai">Z.ai</button>
-                        <button onclick="toggleProviderFilter('Moonshot')"
-                            class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition"
-                            id="prov-Moonshot">Moonshot</button>
+                <!-- Mode + Provider Filters -->
+                <div class="border-t border-slate-800 pt-3 space-y-3">
+                    <div>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Filter by
+                            mode</span>
+                        <div class="flex flex-wrap gap-2" id="modeFilters">
+                            <button type="button" onclick="toggleModeFilter('All')"
+                                class="px-3 py-1 text-[10px] font-black rounded-lg bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 transition shadow-inner"
+                                id="mode-All">All Modes</button>
+                            <button type="button" onclick="toggleModeFilter('standard')"
+                                class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition"
+                                id="mode-standard">Standard</button>
+                            <button type="button" onclick="toggleModeFilter('fast')"
+                                class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition"
+                                id="mode-fast">Fast</button>
+                            <button type="button" onclick="toggleModeFilter('auto')"
+                                class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition"
+                                id="mode-auto">Auto</button>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Filter by
+                            provider</span>
+                        <div class="flex flex-wrap gap-2" id="providerFilters">
+                            <button type="button" onclick="toggleProviderFilter('All')"
+                                class="px-3 py-1 text-[10px] font-black rounded-lg bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 transition shadow-inner"
+                                id="prov-All">All Models</button>
+                            <button type="button" onclick="toggleProviderFilter('Cursor')"
+                                class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition"
+                                id="prov-Cursor">Cursor Auto</button>
+                            <button type="button" onclick="toggleProviderFilter('Anthropic')"
+                                class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition"
+                                id="prov-Anthropic">Anthropic</button>
+                            <button type="button" onclick="toggleProviderFilter('OpenAI')"
+                                class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition"
+                                id="prov-OpenAI">OpenAI</button>
+                            <button type="button" onclick="toggleProviderFilter('Google')"
+                                class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition"
+                                id="prov-Google">Google</button>
+                            <button type="button" onclick="toggleProviderFilter('Grok')"
+                                class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition"
+                                id="prov-Grok">Grok</button>
+                            <button type="button" onclick="toggleProviderFilter('Composer')"
+                                class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition"
+                                id="prov-Composer">Composer Native</button>
+                            <button type="button" onclick="toggleProviderFilter('Z.ai')"
+                                class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition"
+                                id="prov-Z.ai">Z.ai</button>
+                            <button type="button" onclick="toggleProviderFilter('Moonshot')"
+                                class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition"
+                                id="prov-Moonshot">Moonshot</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -491,11 +514,14 @@
                             side-by-side comparison.</p>
                         <p class="text-[11px] text-amber-400/90 mt-2 leading-relaxed max-w-3xl">
                             <i class="fa-solid fa-bolt text-amber-500 mr-1"></i>
-                            Rates below are standard (non–fast mode) API pricing from
+                            Each mode is its own row. <strong>Auto Cost</strong> uses fixed rates;
+                            <strong>Auto Balance</strong> / <strong>Auto Intelligence</strong> bill at the routed
+                            model’s API rate (simulator examples: Sonnet 5 / Opus 5).
+                            <strong>Fast</strong> rows use published Fast-tier rates (often ~2×; Opus Fast can be
+                            higher). Claude Sonnet 5 list rate shown; launch promo is $2/$10 through Aug 31, 2026.
+                            Source:
                             <a href="https://cursor.com/docs/models-and-pricing" class="underline hover:text-amber-300"
                                 target="_blank" rel="noopener">Cursor docs</a>.
-                            Fast-mode variants are intentionally excluded. Claude Sonnet 5 uses its list rate here;
-                            Cursor’s launch promotion is $2/M input and $10/M output through Aug 31, 2026.
                         </p>
                     </div>
                     <div class="flex gap-3">
@@ -629,11 +655,10 @@
                         <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span> Input / Output / Cache Tiers
                     </h4>
                     <p>
-                        Baseline financial values match live API rates from Cursor’s models &amp; pricing docs (standard
-                        mode). Optional <strong class="text-amber-400">fast mode</strong> in the IDE uses higher
-                        per-token rates per model (commonly 2×; see docs)—not duplicated as extra rows here. Enabling
-                        <strong class="text-amber-400">High Mode</strong> in this dashboard applies \( \phi = 1.50 \)
-                        across Input, Cache Write, Cache Read, and Output for simulation only.
+                        Baseline values match Cursor’s models &amp; pricing docs. <strong class="text-amber-400">Fast</strong>
+                        and <strong class="text-sky-300">Auto</strong> modes appear as separate rows. Enabling
+                        <strong class="text-amber-400">High simulation</strong> in this dashboard applies \( \phi = 1.50 \)
+                        across Input, Cache Write, Cache Read, and Output for what-if math only — it is not Cursor Fast mode.
                     </p>
                 </div>
 
@@ -704,52 +729,67 @@
         let currentSortCol = -1;
         let sortAscending = true;
         let selectedProviderFilter = 'All';
+        let selectedModeFilter = 'All';
         let pinnedCompareDeck = []; // Tracks model names to compare
 
-        // Standard (non-fast) rates from https://cursor.com/docs/models-and-pricing.
-        // Bench and score are editorial estimates used only by this explorer.
+        // Rates from https://cursor.com/docs/models-and-pricing (+ model pages for Fast tiers).
+        // mode: auto | standard | fast. Bench/score are editorial estimates.
+        // Auto Balance / Intelligence bill at the routed model's API rate; rows use typical examples.
         const baseModelDataset = [
-            { name: "Auto Cost", input: 1.25, write: 1.25, read: 0.25, output: 6.0, bench: 93, provider: "Cursor", score: 93, color: "text-sky-400 font-bold" },
-            { name: "Claude 4 Sonnet", input: 3.0, write: 3.75, read: 0.3, output: 15.0, bench: 94, provider: "Anthropic", score: 95, color: "text-indigo-400 font-bold" },
-            { name: "Claude 4 Sonnet 1M", input: 6.0, write: 7.5, read: 0.6, output: 22.5, bench: 95, provider: "Anthropic", score: 91, color: "text-indigo-400" },
-            { name: "Claude 4.5 Haiku", input: 1.0, write: 1.25, read: 0.1, output: 5.0, bench: 84, provider: "Anthropic", score: 88, color: "text-indigo-300" },
-            { name: "Claude 4.5 Opus", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 97, provider: "Anthropic", score: 93, color: "text-purple-400 font-bold" },
-            { name: "Claude 4.5 Sonnet", input: 3.0, write: 3.75, read: 0.3, output: 15.0, bench: 95, provider: "Anthropic", score: 96, color: "text-indigo-300 font-bold" },
-            { name: "Claude 4.6 Opus", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 98, provider: "Anthropic", score: 94, color: "text-purple-400 font-bold" },
-            { name: "Claude 4.6 Sonnet", input: 3.0, write: 3.75, read: 0.3, output: 15.0, bench: 96, provider: "Anthropic", score: 97, color: "text-indigo-300 font-bold" },
-            { name: "Claude 4.7 Opus", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 99, provider: "Anthropic", score: 95, color: "text-purple-400 font-black" },
-            { name: "Claude Opus 4.8", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 97, provider: "Anthropic", score: 88, color: "text-purple-400 font-black" },
-            { name: "Claude Fable 5", input: 10.0, write: 12.5, read: 1.0, output: 50.0, bench: 98, provider: "Anthropic", score: 88, color: "text-fuchsia-300 font-black" },
-            { name: "Claude Opus 5", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 99, provider: "Anthropic", score: 96, color: "text-purple-300 font-black" },
-            { name: "Claude Sonnet 5", input: 3.0, write: 3.75, read: 0.3, output: 15.0, bench: 98, provider: "Anthropic", score: 98, color: "text-indigo-200 font-black" },
-            { name: "Composer 2.5", input: 0.5, write: 0.0, read: 0.2, output: 2.5, bench: 86, provider: "Composer", score: 92, color: "text-emerald-300 font-bold" },
-            { name: "Gemini 2.5 Flash", input: 0.3, write: 0.0, read: 0.03, output: 2.5, bench: 76, provider: "Google", score: 84, color: "text-cyan-400" },
-            { name: "Gemini 3 Flash", input: 0.5, write: 0.0, read: 0.05, output: 3.0, bench: 80, provider: "Google", score: 87, color: "text-cyan-400 font-bold" },
-            { name: "Gemini 3 Pro", input: 2.0, write: 0.0, read: 0.2, output: 12.0, bench: 92, provider: "Google", score: 91, color: "text-cyan-300 font-bold" },
-            { name: "Gemini 3 Pro Image Preview", input: 2.0, write: 0.0, read: 0.2, output: 12.0, bench: 91, provider: "Google", score: 89, color: "text-cyan-300" },
-            { name: "Gemini 3.1 Pro", input: 2.0, write: 0.0, read: 0.2, output: 12.0, bench: 93, provider: "Google", score: 92, color: "text-cyan-300 font-bold" },
-            { name: "Gemini 3.5 Flash", input: 1.5, write: 0.0, read: 0.15, output: 9.0, bench: 93, provider: "Google", score: 92, color: "text-cyan-400 font-bold" },
-            { name: "Gemini 3.6 Flash", input: 1.5, write: 0.0, read: 0.15, output: 7.5, bench: 94, provider: "Google", score: 94, color: "text-cyan-300 font-black" },
-            { name: "GLM 5.2", input: 1.4, write: 0.0, read: 0.26, output: 4.4, bench: 89, provider: "Z.ai", score: 91, color: "text-lime-300 font-bold" },
-            { name: "GPT-5", input: 1.25, write: 0.0, read: 0.125, output: 10.0, bench: 91, provider: "OpenAI", score: 92, color: "text-white font-bold" },
-            { name: "GPT-5 Mini", input: 0.25, write: 0.0, read: 0.025, output: 2.0, bench: 78, provider: "OpenAI", score: 86, color: "text-slate-400" },
-            { name: "GPT-5-Codex", input: 1.25, write: 0.0, read: 0.125, output: 10.0, bench: 93, provider: "OpenAI", score: 94, color: "text-amber-300" },
-            { name: "GPT-5.1 Codex", input: 1.25, write: 0.0, read: 0.125, output: 10.0, bench: 94, provider: "OpenAI", score: 95, color: "text-amber-400 font-bold" },
-            { name: "GPT-5.1 Codex Max", input: 1.25, write: 0.0, read: 0.125, output: 10.0, bench: 95, provider: "OpenAI", score: 95, color: "text-amber-400 font-bold" },
-            { name: "GPT-5.1 Codex Mini", input: 0.25, write: 0.0, read: 0.025, output: 2.0, bench: 81, provider: "OpenAI", score: 88, color: "text-slate-400" },
-            { name: "GPT-5.2", input: 1.75, write: 0.0, read: 0.175, output: 14.0, bench: 94, provider: "OpenAI", score: 93, color: "text-white" },
-            { name: "GPT-5.2 Codex", input: 1.75, write: 0.0, read: 0.175, output: 14.0, bench: 96, provider: "OpenAI", score: 95, color: "text-amber-400 font-bold" },
-            { name: "GPT-5.3 Codex", input: 1.75, write: 0.0, read: 0.175, output: 14.0, bench: 97, provider: "OpenAI", score: 96, color: "text-amber-400 font-black" },
-            { name: "GPT-5.4", input: 2.5, write: 0.0, read: 0.25, output: 15.0, bench: 96, provider: "OpenAI", score: 92, color: "text-white" },
-            { name: "GPT-5.4 Mini", input: 0.75, write: 0.0, read: 0.075, output: 4.5, bench: 85, provider: "OpenAI", score: 89, color: "text-slate-400" },
-            { name: "GPT-5.4 Nano", input: 0.2, write: 0.0, read: 0.02, output: 1.25, bench: 75, provider: "OpenAI", score: 85, color: "text-slate-500" },
-            { name: "GPT-5.5", input: 5.0, write: 0.0, read: 0.5, output: 30.0, bench: 99, provider: "OpenAI", score: 93, color: "text-rose-400 font-black" },
-            { name: "GPT-5.6 Luna", input: 0.2, write: 0.25, read: 0.02, output: 1.2, bench: 87, provider: "OpenAI", score: 94, color: "text-sky-300 font-bold" },
-            { name: "GPT-5.6 Sol", input: 5.0, write: 6.25, read: 0.5, output: 30.0, bench: 99, provider: "OpenAI", score: 95, color: "text-rose-300 font-black" },
-            { name: "GPT-5.6 Terra", input: 2.0, write: 2.5, read: 0.2, output: 12.0, bench: 96, provider: "OpenAI", score: 97, color: "text-amber-200 font-black" },
-            { name: "Grok 4.5", input: 2.0, write: 0.0, read: 0.0, output: 6.0, bench: 95, provider: "Grok", score: 96, color: "text-purple-300 font-black" },
-            { name: "Kimi K2.7 Code", input: 0.95, write: 0.0, read: 0.19, output: 4.0, bench: 88, provider: "Moonshot", score: 91, color: "text-slate-300 font-bold" },
-            { name: "Kimi K3", input: 3.0, write: 0.0, read: 0.3, output: 15.0, bench: 94, provider: "Moonshot", score: 93, color: "text-slate-200 font-black" }
+            { name: "Auto Cost", mode: "auto", input: 1.25, write: 1.25, read: 0.25, output: 6.0, bench: 93, provider: "Cursor", score: 93, color: "text-sky-400 font-bold" },
+            { name: "Auto Balance", mode: "auto", variable: true, assumes: "Claude Sonnet 5", input: 3.0, write: 3.75, read: 0.3, output: 15.0, bench: 96, provider: "Cursor", score: 95, color: "text-sky-300 font-bold" },
+            { name: "Auto Intelligence", mode: "auto", variable: true, assumes: "Claude Opus 5", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 98, provider: "Cursor", score: 94, color: "text-indigo-300 font-black" },
+            { name: "Claude 4 Sonnet", mode: "standard", input: 3.0, write: 3.75, read: 0.3, output: 15.0, bench: 94, provider: "Anthropic", score: 95, color: "text-indigo-400 font-bold" },
+            { name: "Claude 4 Sonnet 1M", mode: "standard", input: 6.0, write: 7.5, read: 0.6, output: 22.5, bench: 95, provider: "Anthropic", score: 91, color: "text-indigo-400" },
+            { name: "Claude 4.5 Haiku", mode: "standard", input: 1.0, write: 1.25, read: 0.1, output: 5.0, bench: 84, provider: "Anthropic", score: 88, color: "text-indigo-300" },
+            { name: "Claude 4.5 Opus", mode: "standard", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 97, provider: "Anthropic", score: 93, color: "text-purple-400 font-bold" },
+            { name: "Claude 4.5 Sonnet", mode: "standard", input: 3.0, write: 3.75, read: 0.3, output: 15.0, bench: 95, provider: "Anthropic", score: 96, color: "text-indigo-300 font-bold" },
+            { name: "Claude 4.6 Opus", mode: "standard", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 98, provider: "Anthropic", score: 94, color: "text-purple-400 font-bold" },
+            { name: "Claude 4.6 Sonnet", mode: "standard", input: 3.0, write: 3.75, read: 0.3, output: 15.0, bench: 96, provider: "Anthropic", score: 97, color: "text-indigo-300 font-bold" },
+            { name: "Claude 4.7 Opus", mode: "standard", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 99, provider: "Anthropic", score: 95, color: "text-purple-400 font-black" },
+            { name: "Claude 4.7 Opus (Fast)", mode: "fast", input: 30.0, write: 37.5, read: 3.0, output: 150.0, bench: 99, provider: "Anthropic", score: 82, color: "text-amber-300 font-black" },
+            { name: "Claude Opus 4.8", mode: "standard", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 97, provider: "Anthropic", score: 88, color: "text-purple-400 font-black" },
+            { name: "Claude Opus 4.8 (Fast)", mode: "fast", input: 10.0, write: 12.5, read: 1.0, output: 50.0, bench: 97, provider: "Anthropic", score: 84, color: "text-amber-300 font-black" },
+            { name: "Claude Fable 5", mode: "standard", input: 10.0, write: 12.5, read: 1.0, output: 50.0, bench: 98, provider: "Anthropic", score: 88, color: "text-fuchsia-300 font-black" },
+            { name: "Claude Opus 5", mode: "standard", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 99, provider: "Anthropic", score: 96, color: "text-purple-300 font-black" },
+            { name: "Claude Opus 5 (Fast)", mode: "fast", input: 10.0, write: 12.5, read: 1.0, output: 50.0, bench: 99, provider: "Anthropic", score: 90, color: "text-amber-200 font-black" },
+            { name: "Claude Sonnet 5", mode: "standard", input: 3.0, write: 3.75, read: 0.3, output: 15.0, bench: 98, provider: "Anthropic", score: 98, color: "text-indigo-200 font-black" },
+            { name: "Composer 2.5", mode: "standard", input: 0.5, write: 0.0, read: 0.2, output: 2.5, bench: 86, provider: "Composer", score: 92, color: "text-emerald-300 font-bold" },
+            { name: "Composer 2.5 (Fast)", mode: "fast", input: 3.0, write: 0.0, read: 0.0, output: 15.0, bench: 86, provider: "Composer", score: 88, color: "text-emerald-200 font-black" },
+            { name: "Gemini 2.5 Flash", mode: "standard", input: 0.3, write: 0.0, read: 0.03, output: 2.5, bench: 76, provider: "Google", score: 84, color: "text-cyan-400" },
+            { name: "Gemini 3 Flash", mode: "standard", input: 0.5, write: 0.0, read: 0.05, output: 3.0, bench: 80, provider: "Google", score: 87, color: "text-cyan-400 font-bold" },
+            { name: "Gemini 3 Pro", mode: "standard", input: 2.0, write: 0.0, read: 0.2, output: 12.0, bench: 92, provider: "Google", score: 91, color: "text-cyan-300 font-bold" },
+            { name: "Gemini 3 Pro Image Preview", mode: "standard", input: 2.0, write: 0.0, read: 0.2, output: 12.0, bench: 91, provider: "Google", score: 89, color: "text-cyan-300" },
+            { name: "Gemini 3.1 Pro", mode: "standard", input: 2.0, write: 0.0, read: 0.2, output: 12.0, bench: 93, provider: "Google", score: 92, color: "text-cyan-300 font-bold" },
+            { name: "Gemini 3.5 Flash", mode: "standard", input: 1.5, write: 0.0, read: 0.15, output: 9.0, bench: 93, provider: "Google", score: 92, color: "text-cyan-400 font-bold" },
+            { name: "Gemini 3.6 Flash", mode: "standard", input: 1.5, write: 0.0, read: 0.15, output: 7.5, bench: 94, provider: "Google", score: 94, color: "text-cyan-300 font-black" },
+            { name: "GLM 5.2", mode: "standard", input: 1.4, write: 0.0, read: 0.26, output: 4.4, bench: 89, provider: "Z.ai", score: 91, color: "text-lime-300 font-bold" },
+            { name: "GPT-5", mode: "standard", input: 1.25, write: 0.0, read: 0.125, output: 10.0, bench: 91, provider: "OpenAI", score: 92, color: "text-white font-bold" },
+            { name: "GPT-5 Fast", mode: "fast", input: 2.5, write: 0.0, read: 0.25, output: 20.0, bench: 91, provider: "OpenAI", score: 88, color: "text-amber-200 font-bold" },
+            { name: "GPT-5 Mini", mode: "standard", input: 0.25, write: 0.0, read: 0.025, output: 2.0, bench: 78, provider: "OpenAI", score: 86, color: "text-slate-400" },
+            { name: "GPT-5-Codex", mode: "standard", input: 1.25, write: 0.0, read: 0.125, output: 10.0, bench: 93, provider: "OpenAI", score: 94, color: "text-amber-300" },
+            { name: "GPT-5.1 Codex", mode: "standard", input: 1.25, write: 0.0, read: 0.125, output: 10.0, bench: 94, provider: "OpenAI", score: 95, color: "text-amber-400 font-bold" },
+            { name: "GPT-5.1 Codex Max", mode: "standard", input: 1.25, write: 0.0, read: 0.125, output: 10.0, bench: 95, provider: "OpenAI", score: 95, color: "text-amber-400 font-bold" },
+            { name: "GPT-5.1 Codex Mini", mode: "standard", input: 0.25, write: 0.0, read: 0.025, output: 2.0, bench: 81, provider: "OpenAI", score: 88, color: "text-slate-400" },
+            { name: "GPT-5.2", mode: "standard", input: 1.75, write: 0.0, read: 0.175, output: 14.0, bench: 94, provider: "OpenAI", score: 93, color: "text-white" },
+            { name: "GPT-5.2 Codex", mode: "standard", input: 1.75, write: 0.0, read: 0.175, output: 14.0, bench: 96, provider: "OpenAI", score: 95, color: "text-amber-400 font-bold" },
+            { name: "GPT-5.3 Codex", mode: "standard", input: 1.75, write: 0.0, read: 0.175, output: 14.0, bench: 97, provider: "OpenAI", score: 96, color: "text-amber-400 font-black" },
+            { name: "GPT-5.4", mode: "standard", input: 2.5, write: 0.0, read: 0.25, output: 15.0, bench: 96, provider: "OpenAI", score: 92, color: "text-white" },
+            { name: "GPT-5.4 (Fast)", mode: "fast", input: 5.0, write: 0.0, read: 0.5, output: 30.0, bench: 96, provider: "OpenAI", score: 86, color: "text-amber-200 font-bold" },
+            { name: "GPT-5.4 Mini", mode: "standard", input: 0.75, write: 0.0, read: 0.075, output: 4.5, bench: 85, provider: "OpenAI", score: 89, color: "text-slate-400" },
+            { name: "GPT-5.4 Nano", mode: "standard", input: 0.2, write: 0.0, read: 0.02, output: 1.25, bench: 75, provider: "OpenAI", score: 85, color: "text-slate-500" },
+            { name: "GPT-5.5", mode: "standard", input: 5.0, write: 0.0, read: 0.5, output: 30.0, bench: 99, provider: "OpenAI", score: 93, color: "text-rose-400 font-black" },
+            { name: "GPT-5.5 (Fast)", mode: "fast", input: 10.0, write: 0.0, read: 1.0, output: 60.0, bench: 99, provider: "OpenAI", score: 87, color: "text-amber-200 font-black" },
+            { name: "GPT-5.6 Luna", mode: "standard", input: 0.2, write: 0.25, read: 0.02, output: 1.2, bench: 87, provider: "OpenAI", score: 94, color: "text-sky-300 font-bold" },
+            { name: "GPT-5.6 Luna (Fast)", mode: "fast", input: 0.4, write: 0.5, read: 0.04, output: 2.4, bench: 87, provider: "OpenAI", score: 90, color: "text-amber-200 font-bold" },
+            { name: "GPT-5.6 Sol", mode: "standard", input: 5.0, write: 6.25, read: 0.5, output: 30.0, bench: 99, provider: "OpenAI", score: 95, color: "text-rose-300 font-black" },
+            { name: "GPT-5.6 Sol (Fast)", mode: "fast", input: 10.0, write: 12.5, read: 1.0, output: 60.0, bench: 99, provider: "OpenAI", score: 88, color: "text-amber-200 font-black" },
+            { name: "GPT-5.6 Terra", mode: "standard", input: 2.0, write: 2.5, read: 0.2, output: 12.0, bench: 96, provider: "OpenAI", score: 97, color: "text-amber-200 font-black" },
+            { name: "GPT-5.6 Terra (Fast)", mode: "fast", input: 4.0, write: 5.0, read: 0.4, output: 24.0, bench: 96, provider: "OpenAI", score: 91, color: "text-amber-100 font-black" },
+            { name: "Grok 4.5", mode: "standard", input: 2.0, write: 0.0, read: 0.0, output: 6.0, bench: 95, provider: "Grok", score: 96, color: "text-purple-300 font-black" },
+            { name: "Grok 4.5 (Fast)", mode: "fast", input: 4.0, write: 0.0, read: 0.0, output: 18.0, bench: 95, provider: "Grok", score: 90, color: "text-amber-200 font-black" },
+            { name: "Kimi K2.7 Code", mode: "standard", input: 0.95, write: 0.0, read: 0.19, output: 4.0, bench: 88, provider: "Moonshot", score: 91, color: "text-slate-300 font-bold" },
+            { name: "Kimi K3", mode: "standard", input: 3.0, write: 0.0, read: 0.3, output: 15.0, bench: 94, provider: "Moonshot", score: 93, color: "text-slate-200 font-black" }
         ];
 
         // Core visual calculation thresholds driving color indicators
@@ -821,19 +861,40 @@
             runPickerAdvisor();
         }
 
-        // Provider Filter Coordinator
-        function toggleProviderFilter(prov) {
-            selectedProviderFilter = prov;
-            const provs = ['All', 'Anthropic', 'OpenAI', 'Google', 'Grok', 'Composer', 'Z.ai', 'Moonshot'];
-            provs.forEach(p => {
-                const btn = document.getElementById(`prov-${p}`);
-                if (p === prov) {
+        function setFilterChipActive(prefix, activeId, ids) {
+            ids.forEach(id => {
+                const btn = document.getElementById(`${prefix}-${id}`);
+                if (!btn) return;
+                if (id === activeId) {
                     btn.className = "px-3 py-1 text-[10px] font-black rounded-lg bg-indigo-600 text-white border border-indigo-500/20 transition shadow-md";
                 } else {
                     btn.className = "px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition";
                 }
             });
+        }
+
+        function toggleModeFilter(mode) {
+            selectedModeFilter = mode;
+            setFilterChipActive('mode', mode, ['All', 'standard', 'fast', 'auto']);
             renderTableWorkspace();
+        }
+
+        // Provider Filter Coordinator
+        function toggleProviderFilter(prov) {
+            selectedProviderFilter = prov;
+            setFilterChipActive('prov', prov, ['All', 'Cursor', 'Anthropic', 'OpenAI', 'Google', 'Grok', 'Composer', 'Z.ai', 'Moonshot']);
+            renderTableWorkspace();
+        }
+
+        function modeBadge(model) {
+            if (model.mode === 'fast') {
+                return '<span class="ml-2 px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-amber-500/15 text-amber-300 border border-amber-500/30">Fast</span>';
+            }
+            if (model.mode === 'auto') {
+                const label = model.variable ? `Auto · typ. ${model.assumes}` : 'Auto · fixed';
+                return `<span class="ml-2 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-sky-500/10 text-sky-300 border border-sky-500/25">${label}</span>`;
+            }
+            return '<span class="ml-2 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-slate-800 text-slate-400 border border-slate-700">Std</span>';
         }
 
         // Live Cost Runs Calculator logic integration
@@ -875,7 +936,10 @@
 
             let filteredList = baseModelDataset;
             if (selectedProviderFilter !== 'All') {
-                filteredList = baseModelDataset.filter(m => m.provider === selectedProviderFilter);
+                filteredList = filteredList.filter(m => m.provider === selectedProviderFilter);
+            }
+            if (selectedModeFilter !== 'All') {
+                filteredList = filteredList.filter(m => m.mode === selectedModeFilter);
             }
 
             let cumulativeSimulatedSum = 0;
@@ -910,7 +974,7 @@
                 const pinIcon = isPinned ? 'fa-solid fa-square-check text-indigo-400' : 'fa-regular fa-square text-slate-600 group-hover:text-slate-400';
 
                 tr.innerHTML = `
-                    <td class="p-3.5 whitespace-nowrap ${model.color}">${model.name}</td>
+                    <td class="p-3.5 whitespace-nowrap ${model.color}">${model.name}${modeBadge(model)}</td>
                     <td class="p-3.5 font-mono text-right ${getCostMetricClass(currentInput, 'input')}">$${currentInput.toFixed(2)}</td>
                     <td class="p-3.5 font-mono text-right ${getCostMetricClass(currentWrite, 'write')}">${currentWrite > 0 ? '$' + currentWrite.toFixed(2) : '-'}</td>
                     <td class="p-3.5 font-mono text-right ${getCostMetricClass(currentRead, 'read')}">${currentRead > 0 ? '$' + currentRead.toFixed(3) : '-'}</td>
@@ -1119,8 +1183,9 @@
                 div.className = "bg-slate-950 p-5 rounded-xl border border-slate-800 space-y-4 animate-fadeIn flex flex-col justify-between";
                 div.innerHTML = `
                     <div class="border-b border-slate-800 pb-3">
-                        <span class="text-[9px] font-black uppercase text-indigo-400 tracking-wider">${model.provider}</span>
+                        <span class="text-[9px] font-black uppercase text-indigo-400 tracking-wider">${model.provider}${model.mode ? ' · ' + model.mode : ''}</span>
                         <h4 class="text-base font-black text-white leading-tight mt-1 ${model.color}">${model.name}</h4>
+                        ${model.variable ? `<p class="text-[10px] text-sky-300/90 mt-1">Variable Auto rate · simulated as ${model.assumes}</p>` : ''}
                     </div>
 
                     <div class="space-y-2.5 text-xs">
@@ -1167,10 +1232,14 @@
         }
 
         function getCustomTip(name) {
+            if (name.startsWith('Auto Balance')) return "Bills at the routed model’s API rate. This row simulates a typical Sonnet 5 routing for cost estimates.";
+            if (name.startsWith('Auto Intelligence')) return "Bills at the routed model’s API rate. This row simulates a typical Opus 5 routing for cost estimates.";
+            if (name.startsWith('Auto Cost')) return "Fixed Auto Cost rates regardless of which model Cursor Router selects behind the scenes.";
+            if (name.includes('(Fast)') || name.includes(' Fast')) return "Fast tier: same model intelligence, higher $/1M for lower latency. Use selectively on interactive work.";
             if (name.includes('Fable')) return "Use for high-complexity work only; its data-retention requirements and 2× Opus-class price deserve an explicit choice.";
             if (name.includes('Opus')) return "Best used for absolute highest complexity logic. Do not leave on during fast iterative autocomplete loops.";
             if (name.includes('Sonnet')) return "Excellent overall utility driver. Combines massive cache speed offsets with peak coding intelligence.";
-            if (name.includes('Flash') || name.includes('Nano') || name.includes('Mini')) return "Ultra rapid autocompletes. Optimal budget choice for routine debugging blocks.";
+            if (name.includes('Flash') || name.includes('Nano') || name.includes('Mini') || name.includes('Luna')) return "Ultra rapid autocompletes. Optimal budget choice for routine debugging blocks.";
             if (name.includes('Composer')) return "Native Cursor Agent optimized. Perfect for background continuous workspace scans.";
             return "Excellent standard workspace agent. Ideal balance between long prompts and quick response loops.";
         }
