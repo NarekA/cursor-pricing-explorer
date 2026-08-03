@@ -31,7 +31,9 @@ The dashboard’s **High simulation (1.5×)** toggle is what-if math only. It is
 | --- | --- |
 | **Coding Bench** | Editorial estimate of coding capability (0–100). Not a vendor benchmark. |
 | **Speed** | Editorial estimate of relative responsiveness (0–100). Cursor publishes no speed metric, so read it as ordering, not tokens/sec. A `Fast` row always ranks above its standard twin. |
-| **Overall** | Derived, not stored: `bench × 0.65 + (1 − min(input/1.25, 15) / 15) × 100 × 0.35`. Uses base input rates, so High simulation does not move it. Speed is excluded on purpose. |
+| **Overall** | Derived, not stored: `bench × 0.65 + (1 − min(input/3.0, 15) / 15) × 100 × 0.35`. The `3.0` baseline is Auto Balance (Claude Sonnet 5 input). Uses base input rates, so High simulation does not move it. Speed is excluded on purpose. |
+
+Cost Multiplier \(M\) uses the same Auto Balance baseline, so Auto Balance is always `1.0x` (at Standard simulation). Auto Cost is `~0.4x`.
 
 Only the per-million-token rates come from Cursor docs. `bench` and `speed` are hand-maintained judgement calls; `overallScore()` computes Overall at render time so it cannot drift from the formula the footer documents.
 
