@@ -479,7 +479,9 @@
                             those rows scale Auto Cost by the ~2× average and 4× ceiling Cursor publishes, and exclude
                             the $0.25/1M Cursor Token Rate charged on third-party routes.
                             <strong>Fast</strong> rows use published Fast-tier rates (often ~2×; Opus Fast can be
-                            higher). Claude Sonnet 5 list rate shown; launch promo is $2/$10 through Aug 31, 2026.
+                            higher); the one Fast rate Cursor does not publish carries an
+                            <strong class="text-rose-300">Est</strong> chip. Claude Sonnet 5 list rate shown; launch
+                            promo is $2/$10 through Aug 31, 2026.
                             Source:
                             <a href="https://cursor.com/docs/models-and-pricing" class="underline hover:text-amber-300"
                                 target="_blank" rel="noopener">Cursor docs</a>.
@@ -697,13 +699,20 @@
                         <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span> Input / Output / Cache Tiers
                     </h4>
                     <p>
-                        Baseline values match Cursor’s models &amp; pricing docs. <strong
+                        Every rate is diffed against Cursor’s models &amp; pricing tables, including the
+                        client-rendered Auto Cost, Grok 4.5, and Composer panels. <strong
                             class="text-amber-400">Fast</strong>
                         and <strong class="text-sky-300">Auto</strong> modes appear as separate rows. Enabling
                         <strong class="text-amber-400">High simulation</strong> in this dashboard applies \( \phi = 1.50
                         \)
                         across Input, Cache Write, Cache Read, and Output for what-if math only — it is not Cursor Fast
                         mode.
+                    </p>
+                    <p class="mt-2">
+                        A <strong class="text-rose-300">Est</strong> chip means Cursor publishes no rate for that row
+                        and the number is inferred — currently only GPT-5.5 (Fast), shown at 2× standard. A dash in
+                        Cache Write or Cache Read means Cursor publishes no separate rate; the simulator then bills
+                        cached tokens at the full input rate rather than treating them as free.
                     </p>
                 </div>
 
@@ -859,7 +868,7 @@
             { name: "Claude Opus 5 (Fast)", mode: "fast", input: 10.0, write: 12.5, read: 1.0, output: 50.0, bench: 99, speed: 80, provider: "Anthropic", color: "text-amber-200 font-black" },
             { name: "Claude Sonnet 5", mode: "standard", input: 3.0, write: 3.75, read: 0.3, output: 15.0, bench: 98, speed: 77, provider: "Anthropic", color: "text-indigo-200 font-black" },
             { name: "Composer 2.5", mode: "standard", input: 0.5, write: 0.0, read: 0.2, output: 2.5, bench: 86, speed: 93, provider: "Composer", color: "text-emerald-300 font-bold" },
-            { name: "Composer 2.5 (Fast)", mode: "fast", input: 3.0, write: 0.0, read: 0.0, output: 15.0, bench: 86, speed: 98, provider: "Composer", color: "text-emerald-200 font-black" },
+            { name: "Composer 2.5 (Fast)", mode: "fast", input: 3.0, write: 0.0, read: 0.5, output: 15.0, bench: 86, speed: 98, provider: "Composer", color: "text-emerald-200 font-black" },
             { name: "Gemini 2.5 Flash", mode: "standard", input: 0.3, write: 0.0, read: 0.03, output: 2.5, bench: 76, speed: 95, provider: "Google", color: "text-cyan-400" },
             { name: "Gemini 3 Flash", mode: "standard", input: 0.5, write: 0.0, read: 0.05, output: 3.0, bench: 80, speed: 94, provider: "Google", color: "text-cyan-400 font-bold" },
             { name: "Gemini 3 Pro", mode: "standard", input: 2.0, write: 0.0, read: 0.2, output: 12.0, bench: 92, speed: 70, provider: "Google", color: "text-cyan-300 font-bold" },
@@ -883,15 +892,15 @@
             { name: "GPT-5.4 Mini", mode: "standard", input: 0.75, write: 0.0, read: 0.075, output: 4.5, bench: 85, speed: 89, provider: "OpenAI", color: "text-slate-400" },
             { name: "GPT-5.4 Nano", mode: "standard", input: 0.2, write: 0.0, read: 0.02, output: 1.25, bench: 75, speed: 96, provider: "OpenAI", color: "text-slate-500" },
             { name: "GPT-5.5", mode: "standard", input: 5.0, write: 0.0, read: 0.5, output: 30.0, bench: 99, speed: 55, provider: "OpenAI", color: "text-rose-400 font-black" },
-            { name: "GPT-5.5 (Fast)", mode: "fast", input: 10.0, write: 0.0, read: 1.0, output: 60.0, bench: 99, speed: 75, provider: "OpenAI", color: "text-amber-200 font-black" },
+            { name: "GPT-5.5 (Fast)", mode: "fast", estimated: "Cursor states only that Fast costs more than standard, with no rate. Shown at 2× standard, the multiple Cursor publishes for its other Fast tiers.", input: 10.0, write: 0.0, read: 1.0, output: 60.0, bench: 99, speed: 75, provider: "OpenAI", color: "text-amber-200 font-black" },
             { name: "GPT-5.6 Luna", mode: "standard", input: 0.2, write: 0.25, read: 0.02, output: 1.2, bench: 87, speed: 95, provider: "OpenAI", color: "text-sky-300 font-bold" },
             { name: "GPT-5.6 Luna (Fast)", mode: "fast", input: 0.4, write: 0.5, read: 0.04, output: 2.4, bench: 87, speed: 99, provider: "OpenAI", color: "text-amber-200 font-bold" },
             { name: "GPT-5.6 Sol", mode: "standard", input: 5.0, write: 6.25, read: 0.5, output: 30.0, bench: 99, speed: 56, provider: "OpenAI", color: "text-rose-300 font-black" },
             { name: "GPT-5.6 Sol (Fast)", mode: "fast", input: 10.0, write: 12.5, read: 1.0, output: 60.0, bench: 99, speed: 78, provider: "OpenAI", color: "text-amber-200 font-black" },
             { name: "GPT-5.6 Terra", mode: "standard", input: 2.0, write: 2.5, read: 0.2, output: 12.0, bench: 96, speed: 76, provider: "OpenAI", color: "text-amber-200 font-black" },
             { name: "GPT-5.6 Terra (Fast)", mode: "fast", input: 4.0, write: 5.0, read: 0.4, output: 24.0, bench: 96, speed: 88, provider: "OpenAI", color: "text-amber-100 font-black" },
-            { name: "Grok 4.5", mode: "standard", input: 2.0, write: 0.0, read: 0.0, output: 6.0, bench: 95, speed: 80, provider: "Grok", color: "text-purple-300 font-black" },
-            { name: "Grok 4.5 (Fast)", mode: "fast", input: 4.0, write: 0.0, read: 0.0, output: 18.0, bench: 95, speed: 92, provider: "Grok", color: "text-amber-200 font-black" },
+            { name: "Grok 4.5", mode: "standard", input: 2.0, write: 0.0, read: 0.5, output: 6.0, bench: 95, speed: 80, provider: "Grok", color: "text-purple-300 font-black" },
+            { name: "Grok 4.5 (Fast)", mode: "fast", input: 4.0, write: 0.0, read: 1.0, output: 18.0, bench: 95, speed: 92, provider: "Grok", color: "text-amber-200 font-black" },
             { name: "Kimi K2.7 Code", mode: "standard", input: 0.95, write: 0.0, read: 0.19, output: 4.0, bench: 88, speed: 82, provider: "Moonshot", color: "text-slate-300 font-bold" },
             { name: "Kimi K3", mode: "standard", input: 3.0, write: 0.0, read: 0.3, output: 15.0, bench: 94, speed: 68, provider: "Moonshot", color: "text-slate-200 font-black" }
         ];
@@ -1006,9 +1015,15 @@
             renderTableWorkspace();
         }
 
+        // Marks a rate Cursor has not published, so an estimate never reads as a quoted price.
+        const ESTIMATED_CHIP = '<span class="ml-1 px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-rose-500/10 text-rose-300 border border-rose-500/25">Est</span>';
+
         function modeBadge(model) {
             if (model.mode === 'fast') {
-                return '<span class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-amber-500/15 text-amber-300 border border-amber-500/30">Fast</span>';
+                const chip = '<span class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-amber-500/15 text-amber-300 border border-amber-500/30">Fast</span>';
+                return model.estimated
+                    ? `${chip}${ESTIMATED_CHIP}<span class="block text-[9px] text-slate-500 mt-1 leading-tight">rate not published</span>`
+                    : chip;
             }
             if (model.mode === 'auto') {
                 const chip = '<span class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-sky-500/10 text-sky-300 border border-sky-500/25">Auto</span>';
@@ -1392,6 +1407,12 @@
                             <span class="font-black text-indigo-300">${overallScore(model)} / 100</span>
                         </div>
                     </div>
+
+                    ${model.estimated ? `
+                    <div class="bg-rose-950/20 p-3 rounded-lg border border-rose-900/30 text-[10px] text-rose-200/90 leading-normal">
+                        <i class="fa-solid fa-triangle-exclamation text-rose-400 mr-1"></i>
+                        ${model.estimated}
+                    </div>` : ''}
 
                     <div class="bg-indigo-950/15 p-3 rounded-lg border border-indigo-900/30 text-[10px] text-slate-400 leading-normal">
                         <i class="fa-solid fa-lightbulb text-indigo-400 mr-1"></i>

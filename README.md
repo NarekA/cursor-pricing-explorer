@@ -27,7 +27,7 @@ The only cost figure Cursor publishes is that Balance and Intelligence "cost abo
 Two caveats the table does not price in:
 
 - **Cursor Token Rate** — Teams/Enterprise add $0.25/1M tokens on third-party routes, on top of the model's API rate. Auto Cost and first-party Grok 4.5 / Composer 2.5 are exempt. Cursor does not say whether it applies to input, output, or both, so it is disclosed rather than baked into a rate.
-- **Auto Cost's own rates** are carried over from an earlier sync; `models-and-pricing.md` has no rate table under its Auto Cost heading, so they are unverified against current docs.
+- **Auto Cost's own rates** are verified at $1.25 / $1.25 / $0.25 / $6.00, scraped from the rendered docs page (see below), so the derived rows rest on a confirmed base.
 
 Two ways to see modes in the dashboard:
 
@@ -61,10 +61,16 @@ Open http://localhost:8000.
 ## Updating pricing
 
 1. Compare the model table against the official [Cursor pricing reference](https://cursor.com/docs/models-and-pricing) and linked model pages (including Fast tiers for Composer, Grok, Opus, GPT-5.x).
+
+   **The `.md` version of the docs is not enough.** Auto Cost, Grok 4.5, and Composer 2.5 rates live in client-rendered React components (`modelId: "auto-cost"`, `"grok-4.5"`, `"composer-2.5"`), so they are missing from both `models-and-pricing.md` and the raw HTML, and there is no JSON endpoint in the page payload. Render the page in a real browser and read the tables out of the DOM, or you will silently miss three rows — that is how the Grok 4.5 cache-read rates ended up as `0`.
+
+   Fast tiers are worse: some are a table row, some are only a note ("2x pricing", "3x lower than Opus 4.7 fast mode"), some only appear on the model's own page (Claude Opus 5 Fast is $10 / $50), and GPT-5.5 Fast has no published rate at all.
+
 2. Update `baseModelDataset` in `index.html`.
    - One row per **mode** of a model (`mode: "standard" | "fast" | "auto"`).
    - Store prices in dollars per million tokens.
-   - Use `0` when Cursor publishes no cache-write or cache-read rate; the simulator falls back to normal input pricing when no cache-read rate exists.
+   - Use `0` **only** when Cursor publishes no cache-write or cache-read rate. It is a sentinel, not a zero price: the simulator bills cached tokens at the full input rate when `read` is `0`. Putting `0` on a model that does publish a cache-read rate overstates its cost.
+   - Set `estimated: "<why>"` on any row whose rate is inferred rather than published. It renders an `Est` chip in the Mode column and a warning in the comparison modal.
    - For Auto Balance / Intelligence, keep `variable: true`, `teamsOnly: true`, and `routedMultiple` / `assumes` in sync, and let `routedAutoRates()` derive the rates. Do not paste a specific model's rates into these rows.
    - If Cursor publishes the routing pool differently, update `ROUTER_POOL`; it feeds both tooltips.
    - Treat `bench` and `speed` as editorial estimates, not vendor benchmarks. Do not add a `score` field — Overall is computed by `overallScore()`.
