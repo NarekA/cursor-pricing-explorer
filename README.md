@@ -14,13 +14,24 @@ Each billing mode is its **own row** so you can compare them side by side:
 | --- | --- |
 | **Standard** | Default / non-fast API rates |
 | **Fast** | Published Fast-tier rates (often ~2×; Opus Fast can be higher) |
-| **Auto Cost** | Fixed Auto rates ($1.25 / $6 / $0.25 cache read per 1M) |
-| **Auto Balance** | Bills at the routed model’s API rate — simulator uses **Claude Sonnet 5** as a typical example |
-| **Auto Intelligence** | Bills at the routed model’s API rate — simulator uses **Claude Opus 5** as a typical example |
+| **Auto Cost** | Fixed Auto rates ($1.25 / $6 / $0.25 cache read per 1M), whatever the router picks |
+| **Auto Balance** | Routed rate, no fixed model. Shown as **2× Auto Cost**. Teams/Enterprise only |
+| **Auto Intelligence** | Routed rate, no fixed model. Shown as **4× Auto Cost**. Teams/Enterprise only |
 
-Two ways to see them in the dashboard:
+### Why the Auto rows are a multiple, not a model
 
-- The **Mode** column in the rate matrix badges every row as `Std`, `Fast`, or `Auto` (Auto rows also show which model they bill as).
+[Cursor Router](https://cursor.com/docs/cursor-router.md) picks among Composer 2.5, Grok 4.5, GPT-5.5, Claude Opus 5, and Claude Fable 5, hides which model served a request, and changes the pool over time — so no row can honestly quote one model's rates. Earlier versions of this dashboard claimed Auto Balance billed as Claude Sonnet 5 (which is **not in the pool**) and Auto Intelligence as Claude Opus 5 (one of five, and the docs say Intelligence costs *less* than running a single frontier model). Both were wrong.
+
+The only cost figure Cursor publishes is that Balance and Intelligence "cost about twice as much as Cost, and up to two to four times as much depending on the mode." So `routedAutoRates(m)` scales `AUTO_COST_RATES` by `m`: `2` for Balance, `4` for Intelligence.
+
+Two caveats the table does not price in:
+
+- **Cursor Token Rate** — Teams/Enterprise add $0.25/1M tokens on third-party routes, on top of the model's API rate. Auto Cost and first-party Grok 4.5 / Composer 2.5 are exempt. Cursor does not say whether it applies to input, output, or both, so it is disclosed rather than baked into a rate.
+- **Auto Cost's own rates** are carried over from an earlier sync; `models-and-pricing.md` has no rate table under its Auto Cost heading, so they are unverified against current docs.
+
+Two ways to see modes in the dashboard:
+
+- The **Mode** column in the rate matrix badges every row as `Std`, `Fast`, or `Auto`, plus a `Teams` chip and the routed multiple on Auto Balance / Intelligence.
 - The **Mode** filter chips sit directly above the table — `All modes` / `Standard` / `Fast` / `Auto` — next to the provider chips. The row counter on the right shows how many rows the current filters and search leave visible.
 
 The dashboard’s **High simulation (1.5×)** toggle is what-if math only. It is not the same as Cursor Fast mode.
@@ -31,9 +42,9 @@ The dashboard’s **High simulation (1.5×)** toggle is what-if math only. It is
 | --- | --- |
 | **Coding Bench** | Editorial estimate of coding capability (0–100). Not a vendor benchmark. |
 | **Speed** | Editorial estimate of relative responsiveness (0–100). Cursor publishes no speed metric, so read it as ordering, not tokens/sec. A `Fast` row always ranks above its standard twin. |
-| **Overall** | Derived, not stored: `bench × 0.65 + (1 − min(input/3.0, 15) / 15) × 100 × 0.35`. The `3.0` baseline is Auto Balance (Claude Sonnet 5 input). Uses base input rates, so High simulation does not move it. Speed is excluded on purpose. |
+| **Overall** | Derived, not stored: `bench × 0.65 + (1 − min(input/2.5, 15) / 15) × 100 × 0.35`. The `2.5` baseline is `BASELINE_INPUT`, which reads Auto Balance's input rate off `routedAutoRates(2)` rather than hard-coding it. Uses base input rates, so High simulation does not move it. Speed is excluded on purpose. |
 
-Cost Multiplier \(M\) uses the same Auto Balance baseline, so Auto Balance is always `1.0x` (at Standard simulation). Auto Cost is `~0.4x`.
+Cost Multiplier \(M\) uses the same Auto Balance baseline, so Auto Balance is always `1.0x` (at Standard simulation) and Auto Cost is `0.5x`. Changing the Balance multiple moves `BASELINE_INPUT`, which shifts **every** row's Overall, not just the Auto rows.
 
 Only the per-million-token rates come from Cursor docs. `bench` and `speed` are hand-maintained judgement calls; `overallScore()` computes Overall at render time so it cannot drift from the formula the footer documents.
 
@@ -54,7 +65,8 @@ Open http://localhost:8000.
    - One row per **mode** of a model (`mode: "standard" | "fast" | "auto"`).
    - Store prices in dollars per million tokens.
    - Use `0` when Cursor publishes no cache-write or cache-read rate; the simulator falls back to normal input pricing when no cache-read rate exists.
-   - For Auto Balance / Intelligence, keep `variable: true` and `assumes: "<typical model>"` when the row is an example of routed pricing.
+   - For Auto Balance / Intelligence, keep `variable: true`, `teamsOnly: true`, and `routedMultiple` / `assumes` in sync, and let `routedAutoRates()` derive the rates. Do not paste a specific model's rates into these rows.
+   - If Cursor publishes the routing pool differently, update `ROUTER_POOL`; it feeds both tooltips.
    - Treat `bench` and `speed` as editorial estimates, not vendor benchmarks. Do not add a `score` field — Overall is computed by `overallScore()`.
    - Keep each Fast row's `speed` above its standard twin, and its `bench` equal to it (same model, faster serving).
 3. Search `runPickerAdvisor()` for renamed or removed models. Every recommendation must match a dataset `name`.

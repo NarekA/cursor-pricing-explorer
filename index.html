@@ -7,7 +7,8 @@
     <title>Cursor Model Pricing Explorer & Advisor</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap"
         rel="stylesheet">
     <!-- Tailwind CSS for high-end styling -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -134,6 +135,7 @@
         }
 
         @media (prefers-reduced-motion: reduce) {
+
             *,
             *::before,
             *::after {
@@ -146,13 +148,13 @@
     </style>
 </head>
 
-<body
-    class="text-slate-100 font-sans min-h-screen antialiased selection:bg-indigo-500/30 selection:text-white">
+<body class="text-slate-100 font-sans min-h-screen antialiased selection:bg-indigo-500/30 selection:text-white">
 
     <div class="max-w-[1700px] mx-auto p-4 md:p-6 lg:p-8 space-y-7">
 
         <!-- Header Section -->
-        <header class="instrument-panel rounded-2xl border p-5 md:p-7 flex flex-col xl:flex-row xl:items-end justify-between gap-6">
+        <header
+            class="instrument-panel rounded-2xl border p-5 md:p-7 flex flex-col xl:flex-row xl:items-end justify-between gap-6">
             <div class="space-y-3 max-w-3xl">
                 <div class="font-data text-[10px] uppercase tracking-[0.24em] text-indigo-300 flex items-center gap-2">
                     <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
@@ -165,10 +167,13 @@
                 <p class="text-sm md:text-base text-slate-400 max-w-2xl">
                     Simulate a real prompt, compare model economics, and choose a model for the work—not the hype.
                 </p>
-                <div class="font-data flex flex-wrap gap-x-5 gap-y-2 text-[10px] uppercase tracking-wider text-slate-500">
-                    <span><strong class="text-slate-200" id="modelCount">—</strong> priced rows across standard, fast &amp; auto</span>
-                    <span>Source: <a href="https://cursor.com/docs/models-and-pricing" target="_blank"
-                            rel="noopener" class="text-indigo-300 hover:text-indigo-200 underline underline-offset-4">Cursor docs</a></span>
+                <div
+                    class="font-data flex flex-wrap gap-x-5 gap-y-2 text-[10px] uppercase tracking-wider text-slate-500">
+                    <span><strong class="text-slate-200" id="modelCount">—</strong> priced rows across standard, fast
+                        &amp; auto</span>
+                    <span>Source: <a href="https://cursor.com/docs/models-and-pricing" target="_blank" rel="noopener"
+                            class="text-indigo-300 hover:text-indigo-200 underline underline-offset-4">Cursor
+                            docs</a></span>
                     <span>Synced Aug 3, 2026</span>
                 </div>
             </div>
@@ -455,8 +460,7 @@
 
         <!-- Bottom Large Component: Sortable Data Matrix & Comparison Deck -->
         <div class="grid grid-cols-1 gap-6">
-            <div
-                class="instrument-panel rounded-2xl border overflow-hidden flex flex-col justify-between">
+            <div class="instrument-panel rounded-2xl border overflow-hidden flex flex-col justify-between">
 
                 <!-- Table Search, Column Toggles and Controls -->
                 <div
@@ -465,12 +469,15 @@
                         <h2 class="font-display text-lg font-semibold text-white">Model rate matrix</h2>
                         <p class="text-xs text-slate-400 mt-0.5">Every billing mode is its own row — check the
                             <strong class="text-slate-300">Mode</strong> column, or use the mode filter below to
-                            show only Standard, Fast, or Auto. Sort any column; pin up to three models to compare.</p>
+                            show only Standard, Fast, or Auto. Sort any column; pin up to three models to compare.
+                        </p>
                         <p class="text-[11px] text-amber-400/90 mt-2 leading-relaxed max-w-3xl">
                             <i class="fa-solid fa-bolt text-amber-500 mr-1"></i>
-                            <strong>Auto Cost</strong> uses fixed rates;
-                            <strong>Auto Balance</strong> / <strong>Auto Intelligence</strong> bill at the routed
-                            model’s API rate (simulator examples: Sonnet 5 / Opus 5).
+                            <strong>Auto Cost</strong> uses fixed rates.
+                            <strong>Auto Balance</strong> / <strong>Auto Intelligence</strong> are Teams/Enterprise
+                            only and bill at whichever pool model the router picks, which Cursor does not disclose —
+                            those rows scale Auto Cost by the ~2× average and 4× ceiling Cursor publishes, and exclude
+                            the $0.25/1M Cursor Token Rate charged on third-party routes.
                             <strong>Fast</strong> rows use published Fast-tier rates (often ~2×; Opus Fast can be
                             higher). Claude Sonnet 5 list rate shown; launch promo is $2/$10 through Aug 31, 2026.
                             Source:
@@ -489,9 +496,11 @@
                 </div>
 
                 <!-- Row filters: these narrow the table below, nothing else -->
-                <div class="px-5 py-4 border-b border-slate-800 bg-slate-950/40 flex flex-col lg:flex-row lg:items-start gap-x-8 gap-y-4">
+                <div
+                    class="px-5 py-4 border-b border-slate-800 bg-slate-950/40 flex flex-col lg:flex-row lg:items-start gap-x-8 gap-y-4">
                     <div>
-                        <span class="font-data text-[10px] font-bold text-slate-300 uppercase tracking-[0.16em] block mb-2">
+                        <span
+                            class="font-data text-[10px] font-bold text-slate-300 uppercase tracking-[0.16em] block mb-2">
                             Mode
                         </span>
                         <div class="flex flex-wrap gap-2" id="modeFilters">
@@ -510,7 +519,8 @@
                         </div>
                     </div>
                     <div class="lg:border-l lg:border-slate-800 lg:pl-8">
-                        <span class="font-data text-[10px] font-bold text-slate-300 uppercase tracking-[0.16em] block mb-2">
+                        <span
+                            class="font-data text-[10px] font-bold text-slate-300 uppercase tracking-[0.16em] block mb-2">
                             Provider
                         </span>
                         <div class="flex flex-wrap gap-2" id="providerFilters">
@@ -687,10 +697,13 @@
                         <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span> Input / Output / Cache Tiers
                     </h4>
                     <p>
-                        Baseline values match Cursor’s models &amp; pricing docs. <strong class="text-amber-400">Fast</strong>
+                        Baseline values match Cursor’s models &amp; pricing docs. <strong
+                            class="text-amber-400">Fast</strong>
                         and <strong class="text-sky-300">Auto</strong> modes appear as separate rows. Enabling
-                        <strong class="text-amber-400">High simulation</strong> in this dashboard applies \( \phi = 1.50 \)
-                        across Input, Cache Write, Cache Read, and Output for what-if math only — it is not Cursor Fast mode.
+                        <strong class="text-amber-400">High simulation</strong> in this dashboard applies \( \phi = 1.50
+                        \)
+                        across Input, Cache Write, Cache Read, and Output for what-if math only — it is not Cursor Fast
+                        mode.
                     </p>
                 </div>
 
@@ -702,8 +715,8 @@
                     </h4>
                     <p>
                         The pricing multiplier indicates how expensive a model's base input rate is compared to
-                        <strong class="text-sky-300">Auto Balance</strong> (\( C_{base} = \$3.00 \) per 1M tokens,
-                        the Claude Sonnet 5 rate that Auto Balance typically bills at):
+                        <strong class="text-sky-300">Auto Balance</strong> (\( C_{base} = \$2.50 \) per 1M tokens,
+                        twice the Auto Cost input rate — see the Auto modes card):
                         $$M = \frac{C_{input}}{C_{base}}$$
                         Auto Balance is \( 1.0\times \). Auto Cost sits below that; Fast and Opus-class rows sit above.
                         Values less than \( 1.0\times \) highlight budget-favorable processing states.
@@ -738,6 +751,32 @@
                         rank high; Opus-, Sol-, and Fable-class reasoning models rank low. A <strong
                             class="text-amber-400">Fast</strong> row always ranks above its standard twin, since Fast
                         mode buys latency at a higher per-token rate. Treat it as ordering, not as tokens per second.
+                    </p>
+                </div>
+
+                <!-- Auto modes -->
+                <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800/60 min-w-0">
+                    <h4
+                        class="text-slate-200 font-bold mb-1.5 uppercase tracking-wider text-[10px] flex items-center gap-1.5 border-b border-slate-800/40 pb-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-violet-500"></span> Auto Modes &amp; Cursor Token Rate
+                    </h4>
+                    <p>
+                        <strong class="text-sky-400">Auto Cost</strong> bills fixed per-token rates whatever the router
+                        picks. <strong class="text-sky-300">Auto Balance</strong> and <strong
+                            class="text-indigo-300">Auto Intelligence</strong> instead bill at the routed model's own
+                        API rate, and Cursor deliberately hides which model served a request — so no honest row can
+                        quote a single model's price.
+                    </p>
+                    <p class="mt-2">
+                        The router picks among Composer 2.5, Grok 4.5, GPT-5.5, Claude Opus 5, and Claude Fable 5. The
+                        only cost figure Cursor publishes is that Balance and Intelligence average about
+                        \( 2\times \) Auto Cost and reach \( 2\text{–}4\times \) depending on mode, so those two rows
+                        are Auto Cost scaled by \( 2\times \) and \( 4\times \):
+                        $$C_{routed} = C_{auto\,cost} \times m, \quad m \in [2, 4]$$
+                        Both modes need <strong>Cursor Router</strong>, which is Teams and Enterprise only. On those
+                        plans a third-party route also adds a <strong>Cursor Token Rate</strong> of \$0.25 per 1M
+                        tokens on top of the model's API price; the table excludes it, and Auto Cost plus first-party
+                        Grok 4.5 and Composer 2.5 are exempt.
                     </p>
                 </div>
 
@@ -783,11 +822,27 @@
         // Rates from https://cursor.com/docs/models-and-pricing (+ model pages for Fast tiers).
         // mode: auto | standard | fast. bench and speed are editorial estimates, not vendor
         // metrics — Cursor publishes neither. Overall is derived (see overallScore), not stored.
-        // Auto Balance / Intelligence bill at the routed model's API rate; rows use typical examples.
+        // Auto Balance / Intelligence bill at whichever pool model the router picks, and Cursor
+        // publishes no per-mode model — only that they average ~2x Auto Cost and reach 2-4x
+        // depending on mode. So these two rows scale Auto Cost by that published multiple rather
+        // than quoting one model. Both are Teams/Enterprise only (Cursor Router).
+        const AUTO_COST_RATES = { input: 1.25, write: 1.25, read: 0.25, output: 6.0 };
+        // The published routing pool. Cursor can change it, and hides which member served a
+        // request, so no Auto row can honestly quote one model's rates.
+        const ROUTER_POOL = 'Composer 2.5, Grok 4.5, GPT-5.5, Claude Opus 5, Claude Fable 5';
+        // Teams/Enterprise surcharge on third-party tokens, on top of the model's API price.
+        const CURSOR_TOKEN_RATE = 0.25;
+        const routedAutoRates = (multiple) => ({
+            input: +(AUTO_COST_RATES.input * multiple).toFixed(2),
+            write: +(AUTO_COST_RATES.write * multiple).toFixed(2),
+            read: +(AUTO_COST_RATES.read * multiple).toFixed(2),
+            output: +(AUTO_COST_RATES.output * multiple).toFixed(2),
+        });
+
         const baseModelDataset = [
-            { name: "Auto Cost", mode: "auto", input: 1.25, write: 1.25, read: 0.25, output: 6.0, bench: 88, speed: 88, provider: "Cursor", color: "text-sky-400 font-bold" },
-            { name: "Auto Balance", mode: "auto", variable: true, assumes: "Claude Sonnet 5", input: 3.0, write: 3.75, read: 0.3, output: 15.0, bench: 96, speed: 74, provider: "Cursor", color: "text-sky-300 font-bold" },
-            { name: "Auto Intelligence", mode: "auto", variable: true, assumes: "Claude Opus 5", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 98, speed: 58, provider: "Cursor", color: "text-indigo-300 font-black" },
+            { name: "Auto Cost", mode: "auto", ...AUTO_COST_RATES, bench: 88, speed: 88, provider: "Cursor", color: "text-sky-400 font-bold" },
+            { name: "Auto Balance", mode: "auto", variable: true, routedMultiple: 2, teamsOnly: true, assumes: "~2× Auto Cost", ...routedAutoRates(2), bench: 96, speed: 74, provider: "Cursor", color: "text-sky-300 font-bold" },
+            { name: "Auto Intelligence", mode: "auto", variable: true, routedMultiple: 4, teamsOnly: true, assumes: "~4× Auto Cost", ...routedAutoRates(4), bench: 98, speed: 58, provider: "Cursor", color: "text-indigo-300 font-black" },
             { name: "Claude 4 Sonnet", mode: "standard", input: 3.0, write: 3.75, read: 0.3, output: 15.0, bench: 94, speed: 72, provider: "Anthropic", color: "text-indigo-400 font-bold" },
             { name: "Claude 4 Sonnet 1M", mode: "standard", input: 6.0, write: 7.5, read: 0.6, output: 22.5, bench: 95, speed: 62, provider: "Anthropic", color: "text-indigo-400" },
             { name: "Claude 4.5 Haiku", mode: "standard", input: 1.0, write: 1.25, read: 0.1, output: 5.0, bench: 84, speed: 94, provider: "Anthropic", color: "text-indigo-300" },
@@ -865,10 +920,10 @@
             return rows.map(pick).filter(v => v > 0);
         }
 
-        // Cost multiplier and Overall use Auto Balance ($3/1M input = Claude Sonnet 5) as 1.0x,
-        // not Auto Cost. That is the typical balanced Auto routing, so relative cost reads against
-        // everyday agent work rather than the cheapest Auto pool rate.
-        const BASELINE_INPUT = 3.0;
+        // Cost multiplier and Overall use Auto Balance as 1.0x, not Auto Cost. Balance is the
+        // router's default mode, so relative cost reads against everyday agent work rather than
+        // the cheapest Auto pool rate.
+        const BASELINE_INPUT = routedAutoRates(2).input;
 
         // Overall = coding bench weighted against cost efficiency, on base rates so the number
         // describes the model rather than the current simulator toggle. Speed is reported on its
@@ -957,8 +1012,9 @@
             }
             if (model.mode === 'auto') {
                 const chip = '<span class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-sky-500/10 text-sky-300 border border-sky-500/25">Auto</span>';
-                const note = model.variable ? `bills as ${model.assumes}` : 'fixed rate';
-                return `${chip}<span class="block text-[9px] text-slate-500 mt-1 leading-tight">${note}</span>`;
+                const teams = model.teamsOnly ? '<span class="ml-1 px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-violet-500/10 text-violet-300 border border-violet-500/25">Teams</span>' : '';
+                const note = model.variable ? `routed rate · ${model.assumes}` : 'fixed rate';
+                return `${chip}${teams}<span class="block text-[9px] text-slate-500 mt-1 leading-tight">${note}</span>`;
             }
             return '<span class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-slate-800 text-slate-400 border border-slate-700">Std</span>';
         }
@@ -1299,7 +1355,7 @@
                     <div class="border-b border-slate-800 pb-3">
                         <span class="text-[9px] font-black uppercase text-indigo-400 tracking-wider">${model.provider}${model.mode ? ' · ' + model.mode : ''}</span>
                         <h4 class="text-base font-black text-white leading-tight mt-1 ${model.color}">${model.name}</h4>
-                        ${model.variable ? `<p class="text-[10px] text-sky-300/90 mt-1">Variable Auto rate · simulated as ${model.assumes}</p>` : ''}
+                        ${model.variable ? `<p class="text-[10px] text-sky-300/90 mt-1">Routed rate, no fixed model · shown at ${model.assumes}${model.teamsOnly ? ' · Teams/Enterprise only' : ''}</p>` : ''}
                     </div>
 
                     <div class="space-y-2.5 text-xs">
@@ -1350,9 +1406,9 @@
         }
 
         function getCustomTip(name) {
-            if (name.startsWith('Auto Balance')) return "Bills at the routed model’s API rate. This row simulates a typical Sonnet 5 routing for cost estimates.";
-            if (name.startsWith('Auto Intelligence')) return "Bills at the routed model’s API rate. This row simulates a typical Opus 5 routing for cost estimates.";
-            if (name.startsWith('Auto Cost')) return "Fixed Auto Cost rates regardless of which model Cursor Router selects behind the scenes.";
+            if (name.startsWith('Auto Balance')) return `Teams/Enterprise only. Bills at whichever pool model the router picks (${ROUTER_POOL}), so there is no single rate — this row is Auto Cost × 2, the average Cursor publishes for Balance and Intelligence. Add the $${CURSOR_TOKEN_RATE.toFixed(2)}/1M Cursor Token Rate on third-party routes.`;
+            if (name.startsWith('Auto Intelligence')) return `Teams/Enterprise only. Same routed-rate billing as Balance but weighted to the capable end of the pool (${ROUTER_POOL}), so this row is Auto Cost × 4, the top of Cursor's published 2–4× band. Add the $${CURSOR_TOKEN_RATE.toFixed(2)}/1M Cursor Token Rate on third-party routes.`;
+            if (name.startsWith('Auto Cost')) return "Fixed Auto Cost rates regardless of which model Cursor Router selects behind the scenes. Exempt from the Cursor Token Rate, and the only Auto mode available below Teams.";
             if (name.includes('(Fast)') || name.includes(' Fast')) return "Fast tier: same model intelligence, higher $/1M for lower latency. Use selectively on interactive work.";
             if (name.includes('Fable')) return "Use for high-complexity work only; its data-retention requirements and 2× Opus-class price deserve an explicit choice.";
             if (name.includes('Opus')) return "Best used for absolute highest complexity logic. Do not leave on during fast iterative autocomplete loops.";
