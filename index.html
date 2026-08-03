@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cursor Model Pricing Explorer & Advisor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet">
     <!-- Tailwind CSS for high-end styling -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <!-- FontAwesome for robust, semantic developer iconography -->
@@ -13,6 +17,65 @@
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
+        :root {
+            --canvas: #050812;
+            --panel: rgba(15, 23, 42, 0.82);
+            --line: rgba(99, 102, 241, 0.18);
+            --signal: #818cf8;
+            --positive: #34d399;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background:
+                radial-gradient(circle at 15% -10%, rgba(99, 102, 241, 0.16), transparent 34rem),
+                radial-gradient(circle at 90% 8%, rgba(16, 185, 129, 0.08), transparent 28rem),
+                var(--canvas);
+        }
+
+        body::before {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            content: "";
+            opacity: 0.28;
+            background-image:
+                linear-gradient(rgba(148, 163, 184, 0.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(148, 163, 184, 0.035) 1px, transparent 1px);
+            background-size: 32px 32px;
+            mask-image: linear-gradient(to bottom, black, transparent 82%);
+        }
+
+        .font-display {
+            font-family: "Space Grotesk", sans-serif;
+        }
+
+        .font-data {
+            font-family: "IBM Plex Mono", monospace;
+        }
+
+        .instrument-panel {
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.92), rgba(10, 15, 29, 0.82));
+            border-color: rgba(99, 102, 241, 0.16);
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.24);
+            backdrop-filter: blur(16px);
+        }
+
+        button:focus-visible,
+        input:focus-visible {
+            outline: 2px solid var(--signal);
+            outline-offset: 3px;
+        }
+
+        #masterTable thead {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
         @keyframes slideUp {
             from {
                 transform: translateY(100%);
@@ -61,41 +124,57 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #334155;
         }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
     </style>
 </head>
 
 <body
-    class="bg-slate-950 text-slate-100 font-sans min-h-screen antialiased selection:bg-indigo-500/30 selection:text-white">
+    class="text-slate-100 font-sans min-h-screen antialiased selection:bg-indigo-500/30 selection:text-white">
 
-    <div class="max-w-[1700px] mx-auto p-4 lg:p-8 space-y-8 pb-32">
+    <div class="max-w-[1700px] mx-auto p-4 md:p-6 lg:p-8 space-y-7 pb-32">
 
         <!-- Header Section -->
-        <header class="flex flex-col xl:flex-row xl:items-center justify-between gap-6 border-b border-slate-800 pb-6">
-            <div class="space-y-1">
-                <h1 class="text-3xl font-black tracking-tight text-white flex items-center gap-3">
-                    <i class="fa-solid fa-microchip text-indigo-500 animate-pulse"></i>
-                    Cursor Master Model Matrix
-                    <span
-                        class="text-xs font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-3 py-1 rounded-full uppercase tracking-wider">
-                        2026 Production Edition
-                    </span>
+        <header class="instrument-panel rounded-2xl border p-5 md:p-7 flex flex-col xl:flex-row xl:items-end justify-between gap-6">
+            <div class="space-y-3 max-w-3xl">
+                <div class="font-data text-[10px] uppercase tracking-[0.24em] text-indigo-300 flex items-center gap-2">
+                    <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                    Live pricing instrument
+                </div>
+                <h1 class="font-display text-3xl md:text-5xl font-bold tracking-[-0.04em] text-white leading-none">
+                    Cursor model pricing,
+                    <span class="text-indigo-300">without the spreadsheet.</span>
                 </h1>
-                <p class="text-sm text-slate-400">
-                    A comprehensive, high-fidelity pricing advisor with interactive cash calculators, real-time prompt
-                    simulators, and side-by-side comparison decks.
+                <p class="text-sm md:text-base text-slate-400 max-w-2xl">
+                    Simulate a real prompt, compare model economics, and choose a model for the work—not the hype.
                 </p>
+                <div class="font-data flex flex-wrap gap-x-5 gap-y-2 text-[10px] uppercase tracking-wider text-slate-500">
+                    <span><strong class="text-slate-200" id="modelCount">—</strong> standard-rate models</span>
+                    <span>Source: <a href="https://cursor.com/docs/models-and-pricing" target="_blank"
+                            rel="noopener" class="text-indigo-300 hover:text-indigo-200 underline underline-offset-4">Cursor docs</a></span>
+                    <span>Synced Aug 3, 2026</span>
+                </div>
             </div>
 
             <!-- Global Operational Setting controls -->
             <div class="flex flex-wrap items-center gap-3">
                 <div class="bg-slate-900 p-1 rounded-xl border border-slate-800 flex gap-1 shadow-inner">
-                    <button onclick="setGlobalMode('Standard')" id="mode-Standard"
+                    <button type="button" onclick="setGlobalMode('Standard')" id="mode-Standard"
                         class="px-4 py-2 text-xs font-bold rounded-lg bg-indigo-600 text-white transition shadow duration-150">
                         Standard
                     </button>
-                    <button onclick="setGlobalMode('High')" id="mode-High"
+                    <button type="button" onclick="setGlobalMode('High')" id="mode-High"
                         class="px-4 py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5 duration-150">
-                        <i class="fa-solid fa-fire text-amber-500"></i> High Mode (+1.5x Pool Hit)
+                        <i class="fa-solid fa-fire text-amber-500"></i> High simulation (1.5×)
                     </button>
                 </div>
             </div>
@@ -106,11 +185,11 @@
 
             <!-- Dynamic Custom Simulator Tool (Input/Output/Cache slider weights) -->
             <div
-                class="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl flex flex-col justify-between space-y-6">
+                class="instrument-panel lg:col-span-5 border rounded-2xl p-5 md:p-6 flex flex-col justify-between space-y-6">
                 <div>
                     <div class="flex items-center justify-between border-b border-slate-800 pb-3">
                         <h3 class="font-bold text-white text-sm flex items-center gap-2">
-                            <i class="fa-solid fa-calculator text-emerald-400"></i> Custom Prompt Run Simulator
+                            <i class="fa-solid fa-calculator text-emerald-400"></i> Prompt cost simulator
                         </h3>
                         <span
                             class="text-[10px] bg-emerald-500/10 text-emerald-400 font-bold border border-emerald-500/20 px-2 py-0.5 rounded">
@@ -181,11 +260,11 @@
 
             <!-- Focus Selector (Multi-Select Checkbox Dashboard with Presets) -->
             <div
-                class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl flex flex-col justify-between space-y-4">
+                class="instrument-panel lg:col-span-7 border rounded-2xl p-5 md:p-6 flex flex-col justify-between space-y-4">
                 <div>
                     <div class="flex items-center justify-between border-b border-slate-800 pb-3">
                         <h3 class="font-bold text-white text-sm flex items-center gap-2">
-                            <i class="fa-solid fa-sliders text-amber-400"></i> Advisor Criteria Matrix & Provider Filter
+                            <i class="fa-solid fa-sliders text-amber-400"></i> Workload advisor
                         </h3>
 
                         <!-- Presets Dropdown Actions -->
@@ -329,13 +408,33 @@
                                     reviews</span>
                             </div>
                         </label>
+                        <!-- Third-party API setup -->
+                        <label
+                            class="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-800/60 cursor-pointer transition border border-transparent hover:border-slate-800">
+                            <input type="checkbox" id="focus-api" onchange="runPickerAdvisor()"
+                                class="mt-0.5 rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-0 w-3.5 h-3.5">
+                            <div>
+                                <span class="text-[11px] font-bold text-slate-200 block">API Integration</span>
+                                <span class="text-[9px] text-slate-500 block leading-tight">SDK and auth setup</span>
+                            </div>
+                        </label>
+                        <!-- Test-driven development -->
+                        <label
+                            class="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-800/60 cursor-pointer transition border border-transparent hover:border-slate-800">
+                            <input type="checkbox" id="focus-tdd" onchange="runPickerAdvisor()"
+                                class="mt-0.5 rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-0 w-3.5 h-3.5">
+                            <div>
+                                <span class="text-[11px] font-bold text-slate-200 block">Test Loop</span>
+                                <span class="text-[9px] text-slate-500 block leading-tight">Fast red-green cycles</span>
+                            </div>
+                        </label>
                     </div>
                 </div>
 
                 <!-- Provider-Specific Group Filtering Pills -->
                 <div class="border-t border-slate-800 pt-3">
-                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Provider
-                        Insulated Filters:</span>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Filter by
+                        provider</span>
                     <div class="flex flex-wrap gap-2" id="providerFilters">
                         <button onclick="toggleProviderFilter('All')"
                             class="px-3 py-1 text-[10px] font-black rounded-lg bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 transition shadow-inner"
@@ -355,6 +454,12 @@
                         <button onclick="toggleProviderFilter('Composer')"
                             class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition"
                             id="prov-Composer">Composer Native</button>
+                        <button onclick="toggleProviderFilter('Z.ai')"
+                            class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition"
+                            id="prov-Z.ai">Z.ai</button>
+                        <button onclick="toggleProviderFilter('Moonshot')"
+                            class="px-3 py-1 text-[10px] font-bold rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 transition"
+                            id="prov-Moonshot">Moonshot</button>
                     </div>
                 </div>
             </div>
@@ -364,8 +469,8 @@
         <!-- Middle Section: Recommendation Cards Panel -->
         <div class="space-y-4">
             <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                <i class="fa-solid fa-wand-magic-sparkles text-amber-400 text-xs"></i> Intelligent Advisor
-                Recommendation Engine
+                <i class="fa-solid fa-wand-magic-sparkles text-amber-400 text-xs"></i> Recommendations for selected
+                workloads
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4" id="advisorContainer">
                 <!-- Recommendations cards rendered dynamically here -->
@@ -375,30 +480,29 @@
         <!-- Bottom Large Component: Sortable Data Matrix & Comparison Deck -->
         <div class="grid grid-cols-1 gap-6">
             <div
-                class="bg-slate-900 rounded-2xl border border-slate-800 shadow-2xl overflow-hidden flex flex-col justify-between">
+                class="instrument-panel rounded-2xl border overflow-hidden flex flex-col justify-between">
 
                 <!-- Table Search, Column Toggles and Controls -->
                 <div
                     class="p-5 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900/60">
                     <div>
-                        <h2 class="text-base font-bold text-white">Advanced Cost Metric & Benchmark Index</h2>
-                        <p class="text-xs text-slate-400 mt-0.5">Click column headers to instantly sort. Click
-                            comparison scales to evaluate side-by-side.</p>
+                        <h2 class="font-display text-lg font-semibold text-white">Model rate matrix</h2>
+                        <p class="text-xs text-slate-400 mt-0.5">Sort any column. Pin up to three models for a
+                            side-by-side comparison.</p>
                         <p class="text-[11px] text-amber-400/90 mt-2 leading-relaxed max-w-3xl">
                             <i class="fa-solid fa-bolt text-amber-500 mr-1"></i>
                             Rates below are standard (non–fast mode) API pricing from
                             <a href="https://cursor.com/docs/models-and-pricing" class="underline hover:text-amber-300"
                                 target="_blank" rel="noopener">Cursor docs</a>.
-                            Many models also offer optional <strong>fast mode</strong> (lower latency, higher
-                            $/1M)—often about <strong>2×</strong> all token rates (e.g. GPT-5.4); Opus fast tiers can be
-                            higher. Enable fast mode in the model picker; this table does not list separate fast-mode
-                            rows.
+                            Fast-mode variants are intentionally excluded. Claude Sonnet 5 uses its list rate here;
+                            Cursor’s launch promotion is $2/M input and $10/M output through Aug 31, 2026.
                         </p>
                     </div>
                     <div class="flex gap-3">
                         <div class="relative">
                             <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-500 text-xs"></i>
-                            <input type="text" id="tableSearch" onkeyup="filterTable()" placeholder="Quick search..."
+                            <input type="search" id="tableSearch" oninput="filterTable()" placeholder="Search models…"
+                                aria-label="Search models"
                                 class="bg-slate-950 border border-slate-800 text-xs rounded-xl pl-8 pr-4 py-2 w-48 focus:outline-none focus:border-indigo-500 text-slate-200 transition">
                         </div>
                     </div>
@@ -512,8 +616,8 @@
         <!-- Mathematical Column Calculation Guidelines (Appended with MathJax formulas) -->
         <footer class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl">
             <h3 class="text-sm font-black text-white mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-circle-info text-indigo-400 text-xs animate-bounce"></i>
-                Structural Column Calculation Guidelines
+                <i class="fa-solid fa-circle-info text-indigo-400 text-xs"></i>
+                How the calculations work
             </h3>
             <div
                 class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 text-[11px] text-slate-400 leading-relaxed border-b border-slate-800/60 pb-6">
@@ -558,8 +662,8 @@
                         Tokens (\(T_{out}\)), and Cache Match Ratio (\(R_{cache}\)):
                         $$S_{cost} = \frac{T_{in}}{10^6} \left[ (1-R_{cache})C_{in} + R_{cache}C_{read} \right] +
                         \frac{T_{out}}{10^6}C_{out}$$
-                        For models without native cache write mechanisms, standard input costs are applied
-                        automatically.
+                        When Cursor publishes no cache-read rate, the simulator applies the standard input rate to
+                        cached tokens instead of treating them as free.
                     </p>
                 </div>
 
@@ -583,10 +687,10 @@
 
             </div>
             <div class="pt-4 flex flex-col sm:flex-row justify-between items-center text-[10px] text-slate-500 gap-4">
-                <span>© 2026 Cursor AI Enterprise Pricing Suite. All rights reserved. Mathematical indexes update
-                    dynamically on simulator interaction.</span>
+                <span>Independent pricing explorer. Rates sourced from Cursor docs; benchmark and balance scores are
+                    editorial estimates.</span>
                 <span class="flex items-center gap-1.5">
-                    <i class="fa-solid fa-code"></i> Built for Cursor Professional developers.
+                    <i class="fa-solid fa-code"></i> Updated Aug 3, 2026
                 </span>
             </div>
         </footer>
@@ -602,9 +706,10 @@
         let selectedProviderFilter = 'All';
         let pinnedCompareDeck = []; // Tracks model names to compare
 
-        // Core 2026 specifications dataset mapping standard benchmark and provider values
+        // Standard (non-fast) rates from https://cursor.com/docs/models-and-pricing.
+        // Bench and score are editorial estimates used only by this explorer.
         const baseModelDataset = [
-            { name: "Auto", input: 1.25, write: 1.25, read: 0.25, output: 6.0, bench: 93, provider: "Cursor", score: 93, color: "text-sky-400 font-bold" },
+            { name: "Auto Cost", input: 1.25, write: 1.25, read: 0.25, output: 6.0, bench: 93, provider: "Cursor", score: 93, color: "text-sky-400 font-bold" },
             { name: "Claude 4 Sonnet", input: 3.0, write: 3.75, read: 0.3, output: 15.0, bench: 94, provider: "Anthropic", score: 95, color: "text-indigo-400 font-bold" },
             { name: "Claude 4 Sonnet 1M", input: 6.0, write: 7.5, read: 0.6, output: 22.5, bench: 95, provider: "Anthropic", score: 91, color: "text-indigo-400" },
             { name: "Claude 4.5 Haiku", input: 1.0, write: 1.25, read: 0.1, output: 5.0, bench: 84, provider: "Anthropic", score: 88, color: "text-indigo-300" },
@@ -614,9 +719,9 @@
             { name: "Claude 4.6 Sonnet", input: 3.0, write: 3.75, read: 0.3, output: 15.0, bench: 96, provider: "Anthropic", score: 97, color: "text-indigo-300 font-bold" },
             { name: "Claude 4.7 Opus", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 99, provider: "Anthropic", score: 95, color: "text-purple-400 font-black" },
             { name: "Claude Opus 4.8", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 97, provider: "Anthropic", score: 88, color: "text-purple-400 font-black" },
-            { name: "Composer 1", input: 1.25, write: 0.0, read: 0.125, output: 10.0, bench: 85, provider: "Composer", score: 87, color: "text-emerald-400" },
-            { name: "Composer 1.5", input: 3.5, write: 0.0, read: 0.35, output: 17.5, bench: 90, provider: "Composer", score: 89, color: "text-emerald-400" },
-            { name: "Composer 2", input: 0.5, write: 0.0, read: 0.2, output: 2.5, bench: 82, provider: "Composer", score: 90, color: "text-emerald-400" },
+            { name: "Claude Fable 5", input: 10.0, write: 12.5, read: 1.0, output: 50.0, bench: 98, provider: "Anthropic", score: 88, color: "text-fuchsia-300 font-black" },
+            { name: "Claude Opus 5", input: 5.0, write: 6.25, read: 0.5, output: 25.0, bench: 99, provider: "Anthropic", score: 96, color: "text-purple-300 font-black" },
+            { name: "Claude Sonnet 5", input: 3.0, write: 3.75, read: 0.3, output: 15.0, bench: 98, provider: "Anthropic", score: 98, color: "text-indigo-200 font-black" },
             { name: "Composer 2.5", input: 0.5, write: 0.0, read: 0.2, output: 2.5, bench: 86, provider: "Composer", score: 92, color: "text-emerald-300 font-bold" },
             { name: "Gemini 2.5 Flash", input: 0.3, write: 0.0, read: 0.03, output: 2.5, bench: 76, provider: "Google", score: 84, color: "text-cyan-400" },
             { name: "Gemini 3 Flash", input: 0.5, write: 0.0, read: 0.05, output: 3.0, bench: 80, provider: "Google", score: 87, color: "text-cyan-400 font-bold" },
@@ -624,6 +729,8 @@
             { name: "Gemini 3 Pro Image Preview", input: 2.0, write: 0.0, read: 0.2, output: 12.0, bench: 91, provider: "Google", score: 89, color: "text-cyan-300" },
             { name: "Gemini 3.1 Pro", input: 2.0, write: 0.0, read: 0.2, output: 12.0, bench: 93, provider: "Google", score: 92, color: "text-cyan-300 font-bold" },
             { name: "Gemini 3.5 Flash", input: 1.5, write: 0.0, read: 0.15, output: 9.0, bench: 93, provider: "Google", score: 92, color: "text-cyan-400 font-bold" },
+            { name: "Gemini 3.6 Flash", input: 1.5, write: 0.0, read: 0.15, output: 7.5, bench: 94, provider: "Google", score: 94, color: "text-cyan-300 font-black" },
+            { name: "GLM 5.2", input: 1.4, write: 0.0, read: 0.26, output: 4.4, bench: 89, provider: "Z.ai", score: 91, color: "text-lime-300 font-bold" },
             { name: "GPT-5", input: 1.25, write: 0.0, read: 0.125, output: 10.0, bench: 91, provider: "OpenAI", score: 92, color: "text-white font-bold" },
             { name: "GPT-5 Mini", input: 0.25, write: 0.0, read: 0.025, output: 2.0, bench: 78, provider: "OpenAI", score: 86, color: "text-slate-400" },
             { name: "GPT-5-Codex", input: 1.25, write: 0.0, read: 0.125, output: 10.0, bench: 93, provider: "OpenAI", score: 94, color: "text-amber-300" },
@@ -637,10 +744,12 @@
             { name: "GPT-5.4 Mini", input: 0.75, write: 0.0, read: 0.075, output: 4.5, bench: 85, provider: "OpenAI", score: 89, color: "text-slate-400" },
             { name: "GPT-5.4 Nano", input: 0.2, write: 0.0, read: 0.02, output: 1.25, bench: 75, provider: "OpenAI", score: 85, color: "text-slate-500" },
             { name: "GPT-5.5", input: 5.0, write: 0.0, read: 0.5, output: 30.0, bench: 99, provider: "OpenAI", score: 93, color: "text-rose-400 font-black" },
-            { name: "Grok 4.20", input: 2.0, write: 0.0, read: 0.2, output: 6.0, bench: 89, provider: "Grok", score: 88, color: "text-purple-300" },
-            { name: "Grok 4.3", input: 1.25, write: 0.0, read: 0.2, output: 2.5, bench: 88, provider: "Grok", score: 89, color: "text-purple-300" },
-            { name: "Grok Build 0.1", input: 1.0, write: 0.0, read: 0.2, output: 2.0, bench: 90, provider: "Grok", score: 91, color: "text-purple-300" },
-            { name: "Kimi K2.5", input: 0.6, write: 0.0, read: 0.1, output: 3.0, bench: 83, provider: "Kimi", score: 86, color: "text-slate-400" }
+            { name: "GPT-5.6 Luna", input: 0.2, write: 0.25, read: 0.02, output: 1.2, bench: 87, provider: "OpenAI", score: 94, color: "text-sky-300 font-bold" },
+            { name: "GPT-5.6 Sol", input: 5.0, write: 6.25, read: 0.5, output: 30.0, bench: 99, provider: "OpenAI", score: 95, color: "text-rose-300 font-black" },
+            { name: "GPT-5.6 Terra", input: 2.0, write: 2.5, read: 0.2, output: 12.0, bench: 96, provider: "OpenAI", score: 97, color: "text-amber-200 font-black" },
+            { name: "Grok 4.5", input: 2.0, write: 0.0, read: 0.0, output: 6.0, bench: 95, provider: "Grok", score: 96, color: "text-purple-300 font-black" },
+            { name: "Kimi K2.7 Code", input: 0.95, write: 0.0, read: 0.19, output: 4.0, bench: 88, provider: "Moonshot", score: 91, color: "text-slate-300 font-bold" },
+            { name: "Kimi K3", input: 3.0, write: 0.0, read: 0.3, output: 15.0, bench: 94, provider: "Moonshot", score: 93, color: "text-slate-200 font-black" }
         ];
 
         // Core visual calculation thresholds driving color indicators
@@ -715,7 +824,7 @@
         // Provider Filter Coordinator
         function toggleProviderFilter(prov) {
             selectedProviderFilter = prov;
-            const provs = ['All', 'Anthropic', 'OpenAI', 'Google', 'Grok', 'Composer'];
+            const provs = ['All', 'Anthropic', 'OpenAI', 'Google', 'Grok', 'Composer', 'Z.ai', 'Moonshot'];
             provs.forEach(p => {
                 const btn = document.getElementById(`prov-${p}`);
                 if (p === prov) {
@@ -743,7 +852,7 @@
         function calculateRunValue(model, inputTokens, outputTokens, cacheHitRatio) {
             const premiumMod = globalMode === 'High' ? 1.5 : 1.0;
             const currentInputPrice = model.input * premiumMod;
-            const currentCacheReadPrice = model.read * premiumMod;
+            const currentCacheReadPrice = (model.read > 0 ? model.read : model.input) * premiumMod;
             const currentOutputPrice = model.output * premiumMod;
 
             // Compute actual run cost
@@ -804,7 +913,7 @@
                     <td class="p-3.5 whitespace-nowrap ${model.color}">${model.name}</td>
                     <td class="p-3.5 font-mono text-right ${getCostMetricClass(currentInput, 'input')}">$${currentInput.toFixed(2)}</td>
                     <td class="p-3.5 font-mono text-right ${getCostMetricClass(currentWrite, 'write')}">${currentWrite > 0 ? '$' + currentWrite.toFixed(2) : '-'}</td>
-                    <td class="p-3.5 font-mono text-right ${getCostMetricClass(currentRead, 'read')}">$${currentRead.toFixed(3)}</td>
+                    <td class="p-3.5 font-mono text-right ${getCostMetricClass(currentRead, 'read')}">${currentRead > 0 ? '$' + currentRead.toFixed(3) : '-'}</td>
                     <td class="p-3.5 font-mono text-right ${getCostMetricClass(currentOutput, 'output')}">$${currentOutput.toFixed(2)}</td>
                     <td class="p-3.5 font-mono text-right font-black text-indigo-400 bg-indigo-950/5">$${simulatedRunCost.toFixed(4)}</td>
                     <td class="p-3.5 text-center font-mono ${getMultiplierVisualClass(relativeMultiplier)}">${relativeMultiplier}x</td>
@@ -883,20 +992,20 @@
             container.innerHTML = "";
 
             const focuses = [
-                { id: 'top', title: 'SOTA Intelligence Focus', icon: 'fa-brain', text: 'text-purple-400', p: 'Claude 4.7 Opus', pa: 'Claude 4.6 Sonnet', ba: 'GPT-5.1 Codex' },
-                { id: 'speed', title: 'Blazing Speed Focus', icon: 'fa-gauge-high', text: 'text-cyan-400', p: 'Gemini 3 Flash', pa: 'GPT-5.4 Nano', ba: 'Gemini 2.5 Flash' },
-                { id: 'bughunt', title: 'Deep Bug Hunt Focus', icon: 'fa-spider', text: 'text-rose-400', p: 'Claude 4.7 Opus', pa: 'GPT-5.3 Codex', ba: 'Composer 2.5' },
+                { id: 'top', title: 'SOTA Intelligence Focus', icon: 'fa-brain', text: 'text-purple-400', p: 'Claude Opus 5', pa: 'Claude Sonnet 5', ba: 'GPT-5.6 Terra' },
+                { id: 'speed', title: 'Blazing Speed Focus', icon: 'fa-gauge-high', text: 'text-cyan-400', p: 'GPT-5.6 Luna', pa: 'Gemini 3.6 Flash', ba: 'Gemini 2.5 Flash' },
+                { id: 'bughunt', title: 'Deep Bug Hunt Focus', icon: 'fa-spider', text: 'text-rose-400', p: 'Claude Opus 5', pa: 'GPT-5.6 Sol', ba: 'Composer 2.5' },
                 { id: 'legacy', title: 'Legacy Archaeologist', icon: 'fa-monument', text: 'text-amber-400', p: 'Claude 4 Sonnet 1M', pa: 'GPT-5.1 Codex Max', ba: 'Gemini 3.1 Pro' },
-                { id: 'boilerplate', title: 'Boilerplate Factory', icon: 'fa-industry', text: 'text-blue-400', p: 'GPT-5.5', pa: 'Claude 4.6 Sonnet', ba: 'Composer 1.5' },
-                { id: 'devops', title: 'DevOps & Infrastructure', icon: 'fa-terminal', text: 'text-orange-400', p: 'GPT-5.2 Codex', pa: 'Grok 4.3', ba: 'GPT-5.4 Mini' },
-                { id: 'agent', title: 'Rampaging Agent Mode', icon: 'fa-robot', text: 'text-emerald-400', p: 'Composer 2.5', pa: 'Claude 4.5 Sonnet', ba: 'Composer 2' },
-                { id: 'pixel', title: 'Frontend UI Pixel-Pusher', icon: 'fa-palette', text: 'text-fuchsia-400', p: 'Gemini 3 Pro Image Preview', pa: 'Claude 4.6 Sonnet', ba: 'Composer 2.5' },
-                { id: 'privacy', title: 'Air-Gapped Privacy Wall', icon: 'fa-shield-halved', text: 'text-teal-400', p: 'GPT-5.1 Codex Max', pa: 'Claude 4.5 Opus', ba: 'Gemini 3 Pro' },
-                { id: 'migrate', title: 'Language Migration', icon: 'fa-language', text: 'text-indigo-400', p: 'Claude 4.7 Opus', pa: 'GPT-5.5', ba: 'Composer 1.5' },
-                { id: 'sql', title: 'The SQL Executioner', icon: 'fa-database', text: 'text-yellow-500', p: 'GPT-5.2 Codex', pa: 'Claude 4.6 Sonnet', ba: 'Grok 4.3' },
-                { id: 'api', title: 'Third-Party API Setup', icon: 'fa-plug', text: 'text-sky-400', p: 'GPT-5.1 Codex Max', pa: 'Claude 4.5 Sonnet', ba: 'Gemini 3 Flash' },
-                { id: 'tdd', title: 'Panic-Driven TDD Suite', icon: 'fa-vial', text: 'text-lime-400', p: 'GPT-5.1 Codex', pa: 'Composer 2.5', ba: 'GPT-5.4 Mini' },
-                { id: 'reviewer', title: 'Strict Code Reviewer', icon: 'fa-eye', text: 'text-violet-400', p: 'Claude 4.6 Opus', pa: 'Claude 4.5 Sonnet', ba: 'Composer 2' }
+                { id: 'boilerplate', title: 'Boilerplate Factory', icon: 'fa-industry', text: 'text-blue-400', p: 'GPT-5.6 Terra', pa: 'Claude Sonnet 5', ba: 'Composer 2.5' },
+                { id: 'devops', title: 'DevOps & Infrastructure', icon: 'fa-terminal', text: 'text-orange-400', p: 'GPT-5.6 Sol', pa: 'Grok 4.5', ba: 'GPT-5.6 Luna' },
+                { id: 'agent', title: 'Long Agent Run', icon: 'fa-robot', text: 'text-emerald-400', p: 'Composer 2.5', pa: 'Claude Sonnet 5', ba: 'GPT-5.6 Luna' },
+                { id: 'pixel', title: 'Frontend UI Work', icon: 'fa-palette', text: 'text-fuchsia-400', p: 'Gemini 3 Pro Image Preview', pa: 'Claude Sonnet 5', ba: 'Composer 2.5' },
+                { id: 'privacy', title: 'Privacy-Sensitive Work', icon: 'fa-shield-halved', text: 'text-teal-400', p: 'GPT-5.6 Terra', pa: 'Claude Opus 5', ba: 'Gemini 3.1 Pro' },
+                { id: 'migrate', title: 'Language Migration', icon: 'fa-language', text: 'text-indigo-400', p: 'Claude Opus 5', pa: 'GPT-5.6 Terra', ba: 'Composer 2.5' },
+                { id: 'sql', title: 'Query and ORM Tuning', icon: 'fa-database', text: 'text-yellow-500', p: 'GPT-5.6 Terra', pa: 'Claude Sonnet 5', ba: 'Grok 4.5' },
+                { id: 'api', title: 'Third-Party API Setup', icon: 'fa-plug', text: 'text-sky-400', p: 'GPT-5.6 Terra', pa: 'Claude Sonnet 5', ba: 'Gemini 3.6 Flash' },
+                { id: 'tdd', title: 'Fast Test Loop', icon: 'fa-vial', text: 'text-lime-400', p: 'GPT-5.6 Luna', pa: 'Composer 2.5', ba: 'Gemini 2.5 Flash' },
+                { id: 'reviewer', title: 'Strict Code Reviewer', icon: 'fa-eye', text: 'text-violet-400', p: 'Claude Opus 5', pa: 'Claude Sonnet 5', ba: 'GPT-5.6 Terra' }
             ];
 
             let activeCount = 0;
@@ -1025,7 +1134,7 @@
                         </div>
                         <div class="flex justify-between items-center border-t border-slate-900 pt-2">
                             <span class="text-slate-500">Cache Read:</span>
-                            <span class="font-mono text-slate-200 font-bold">$${currentRead.toFixed(3)}</span>
+                            <span class="font-mono text-slate-200 font-bold">${currentRead > 0 ? '$' + currentRead.toFixed(3) : 'Not published'}</span>
                         </div>
                         <div class="flex justify-between items-center border-t border-slate-900 pt-2">
                             <span class="text-slate-500">Base Output:</span>
@@ -1058,6 +1167,7 @@
         }
 
         function getCustomTip(name) {
+            if (name.includes('Fable')) return "Use for high-complexity work only; its data-retention requirements and 2× Opus-class price deserve an explicit choice.";
             if (name.includes('Opus')) return "Best used for absolute highest complexity logic. Do not leave on during fast iterative autocomplete loops.";
             if (name.includes('Sonnet')) return "Excellent overall utility driver. Combines massive cache speed offsets with peak coding intelligence.";
             if (name.includes('Flash') || name.includes('Nano') || name.includes('Mini')) return "Ultra rapid autocompletes. Optimal budget choice for routine debugging blocks.";
@@ -1072,7 +1182,9 @@
         }
 
         // Initialize runtime script
+        document.getElementById('modelCount').innerText = baseModelDataset.length;
         setGlobalMode('Standard');
+        runPickerAdvisor();
     </script>
 </body>
 
